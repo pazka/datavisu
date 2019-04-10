@@ -3,6 +3,26 @@ class DataMap{
     opacity = 100;
     img;
 
+    screenBounds ={
+        lines : [ [[0.4427083333333333,0.15789473684210525],[0.6595052083333334,0.16204986149584488] ],
+                [[0.6595052083333334,0.16204986149584488],[0.7135416666666666,0.3767313019390582]    ],
+                [[0.7135416666666666,0.3767313019390582],[0.7239583333333334,0.685595567867036]      ],
+                [[0.7239583333333334,0.685595567867036],[0.5325520833333334,0.8795013850415513]      ],
+                [[0.5325520833333334,0.8795013850415513],[0.23828125,0.6842105263157895]             ],
+                [[0.23828125,0.6842105263157895],[0.3307291666666667,0.29362880886426596]            ],
+                [[0.3307291666666667,0.29362880886426596],[0.4427083333333333,0.15789473684210525]   ]
+                ],
+        points:[[0.4427083333333333,0.15789473684210525], [0.6595052083333334,0.16204986149584488],
+                [0.7135416666666666,0.3767313019390582], [0.7239583333333334,0.685595567867036],
+                [0.5325520833333334,0.8795013850415513], [0.23828125,0.6842105263157895],
+                [0.3307291666666667,0.29362880886426596], [0.4427083333333333,0.15789473684210525]
+                ],
+        maxX : 0,
+        maxY : 0,
+        minX : 100,
+        minY : 100,
+    } 
+    
     internalGeoBounds = {
         minX : 99999999999999, 
         maxX : 0, 
@@ -22,6 +42,20 @@ class DataMap{
         this.dimension.height = _height;
         this.pos.x = posx;
         this.pos.y = posy;
+
+        //init map screen bounds vertices
+        for (let i = 0; i < this.screenBounds.lines.length; i++) {
+            this.screenBounds.lines[i][0][0] *= _p.width;
+            this.screenBounds.lines[i][1][0] *= _p.width;
+            this.screenBounds.lines[i][0][1] *= _p.height;
+            this.screenBounds.lines[i][1][1] *= _p.height;
+        }
+
+        //inir map screen bounds points
+        for (let i = 0; i < this.screenBounds.points.length; i++) {
+            this.screenBounds.points[i][0] *= _p.width;
+            this.screenBounds.points[i][1] *= _p.height;
+        }
     }
 
     setup = (json)=>{
@@ -89,15 +123,23 @@ class DataMap{
         + "\r\n" +
         JSON.stringify(_dataMngr.datesBounds)+
         "\r\n"
-        + Math.round(_p.millis());
+        + Math.round(_p.millis())+
+        "\r\n"+
+        JSON.stringify(_bounds)
+        ;
     }
     
     getX = (x)=> {
+        //get ratio
         var position = (x - this.internalGeoBounds.minX) / (this.internalGeoBounds.maxX - this.internalGeoBounds.minX); 
+        //get screen pos
         return this.pos.x + this.dimension.width*position;
     }
+
     getY = (y)=>{
+        //get ratio
         var position = (y - this.internalGeoBounds.minY) / (this.internalGeoBounds.maxY - this.internalGeoBounds.minY); 
-        return this.pos.y + this.dimension.height- this.dimension.height*position;
+        //get screen pos
+        return this.pos.y + this.dimension.height - this.dimension.height*position;
     }
 }

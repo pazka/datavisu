@@ -1,15 +1,22 @@
 //https://opendata.paris.fr/explore/dataset/velib-disponibilite-en-temps-reel/information/
 class DataVelib extends Data{
     size;
-
-    constructor(date,life,x,y,_size = 10){
+    colors;
+    constructor(date,life,x,y,_size = 15){
         super(date,life,x,y);
         this.size = _size;
+        this.colors=[
+        [rdm()*255, rdm()*255, rdm()*255],
+        [rdm()*255, rdm()*255, rdm()*255],
+        [rdm()*255, rdm()*255, rdm()*255]]
     }
 
     draw(p){
-        let x = (this.age/this.life);
-        drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,50,0], 100- 100*x*x); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        let x = (this.age/this.life)*100;
+        //drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,50,0], 100- x/(110-x)*10); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        drawTargetBis(p,this.pos.x,this.pos.y,50,this.colors.length,this.colors, 100- x);
+        p.fill(100);
+        p.text(Math.round(x),this.pos.x,this.pos.y-30)
         super.draw(p);
     }
 }

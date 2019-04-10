@@ -26,6 +26,11 @@ function loadDates(){
             _dataMngr.addData(renc);
         },renc.date);
     })
+    Cafe.browse(import_cafe_json,(cafe)=>{
+        setTimeout(()=>{
+            _dataMngr.addData(cafe);
+        },cafe.date);
+    })
 
     //loop
     _dataMngr.timeStart();
@@ -34,7 +39,8 @@ function loadDates(){
         loadDates();
     },_dataMngr.datesBounds.totalTimeLength);
 }
-
+let _bounds = [];
+let index = 0;
 let s = function( p ) {
     _p = p;
     p.setup = ()=> {
@@ -63,6 +69,16 @@ let s = function( p ) {
         _p.rect(0,0,_p.width,_p.height);
         _map.draw(_p);
         _dataMngr.drawData();
+    }
+
+    p.mouseClicked = (m)=>{
+        if(!m.ctrlKey)        
+        _bounds.push({
+            i : index++,
+            x : p.mouseX/p.width,
+            y : p.mouseY/p.height
+        })
+        
     }
 };
 
