@@ -71,7 +71,7 @@ let s = function( p ) {
         _dataMngr.drawData();
     }
 
-    p.mouseClicked = (m)=>{
+   /* p.mouseClicked = (m)=>{
         if(!m.ctrlKey)        
         _bounds.push({
             i : index++,
@@ -79,7 +79,7 @@ let s = function( p ) {
             y : p.mouseY/p.height
         })
         
-    }
+    }*/
 };
 
 var myp5 = new p5(s);

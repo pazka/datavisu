@@ -52,7 +52,7 @@ class DataElec extends Data{
         //p.image(this.dataMask,0,0);
 
         this.dataCircles[this.circleCurrentPosition].forEach(coords => {
-            drawTarget(_p,coords[0],coords[1],15,5,[100,100,255],100);
+            drawTarget(_p,coords[0],coords[1],15,5,[100,100,255],255);
         });
 
 

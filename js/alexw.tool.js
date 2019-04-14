@@ -102,3 +102,8 @@ function drawGradientTriangle(p,base,vertex,colorBase,colorVertex,steps){
         p.endShape(p.CLOSE);
     }
 }
+
+function opacityFn(x){
+    // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=103-\frac{100}{x+1}-\frac{x}{101-x}
+    return (100-(255/x+1)-(x/(255-x)))
+}

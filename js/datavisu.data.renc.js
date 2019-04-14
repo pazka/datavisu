@@ -2,7 +2,7 @@
 
 function opacityFn(x){
     // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=103-\frac{100}{x+1}-\frac{x}{101-x}
-    return (103-(100/x+1)-(x/(101-x)))
+    return (255-(255/x+1)-(x/(255-x)))
 }
 
 class DataRenc extends Data{
@@ -15,13 +15,13 @@ class DataRenc extends Data{
     }
 
     draw(p){        
-        let x = (this.age/this.life)*100;
+        let x = (this.age/this.life)*255;
         //p.tint(255, 100-(x/(110-x))*10)
       /*  _map.screenBounds.lines.forEach((line)=>{
             drawGradientTriangle(p,line,[this.pos[0],this.pos[1]],[255,0,0,50],[0,0,255,100],100);
         })*/
 
-        //drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
+        drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
        // p.noTint();
     }
 }
