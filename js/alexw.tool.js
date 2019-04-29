@@ -10,13 +10,16 @@ function rdm(){
 }
 
 function vs(speed = 500){
-    return _p.sin((_p.millis()/speed)%360);
+    return (_p.sin((_p.millis()/speed)%360)+1)/2;
 }
 function vc(speed = 500){
-    return _p.cos((_p.millis()/speed)%360);
+    return (_p.cos((_p.millis()/speed)%360)+1)/2;
+}
+function mr(x){
+    return Math.round(x);
 }
 
-var logs = "";
+let logs = "";
 function _log(str){
     logs += str+";";
 }
@@ -52,14 +55,14 @@ function isInsidePoly(point, vs) {
     // ray-casting algorithm based on
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 
-    var x = point[0], y = point[1];
+    let x = point[0], y = point[1];
 
-    var inside = false;
-    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-        var xi = vs[i][0], yi = vs[i][1];
-        var xj = vs[j][0], yj = vs[j][1];
+    let inside = false;
+    for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        let xi = vs[i][0], yi = vs[i][1];
+        let xj = vs[j][0], yj = vs[j][1];
 
-        var intersect = ((yi > y) != (yj > y))
+        let intersect = ((yi > y) != (yj > y))
             && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
         if (intersect) inside = !inside;
     }
@@ -67,7 +70,8 @@ function isInsidePoly(point, vs) {
     return inside;
 };
 
-function drawGradientTriangle(p,base,vertex,colorBase,colorVertex,steps){
+function drawGradientTriangle(p,base,vertex,colorBase,colorVertex,steps,gradientFunctions){
+    let gf = gradientFunctions ? gradientFunctions : new Array(4).map(()=>(x,i,t)=>x)
     //Base to Vertex
     let vectColor = [
         ((colorVertex[0]-colorBase[0])/steps),
@@ -92,8 +96,16 @@ function drawGradientTriangle(p,base,vertex,colorBase,colorVertex,steps){
 
         p.beginShape();
         //drawBase
-        p.vertex(base[0][0] + vectFirstSegment[0]   *step,base[0][1] + vectFirstSegment[1] *step);
-        p.vertex(base[1][0] + vectSecondSegment[0]  *step,base[1][1] + vectSecondSegment[1]   *step);
+        p.vertex(base[0][0] + vectFirstSegment[0]   *step,base[0][1] + vectFirstSegment[1]      *step);
+        p.vertex(base[1][0] + vectSecondSegment[0]  *step,base[1][1] + vectSecondSegment[1]     *step);
+
+        /*p.text([
+            colorBase[0] + vectColor[0]*step,
+            colorBase[1] + vectColor[1]*step,
+            colorBase[2] + vectColor[2]*step,
+            colorBase[3] + vectColor[3]*step
+        ],((base[0][0] + vectFirstSegment[0]   *step) + (base[1][0] + vectSecondSegment[0]  *step)) /2,
+        ((base[0][1] + vectFirstSegment[0]   *step) + (base[1][1] + vectSecondSegment[0]  *step)) /2);*/
 
         //draw to temp segment ( tales)
         p.vertex(base[1][0] + vectSecondSegment[0]*(step+1) ,base[1][1] + vectSecondSegment[1]  *(step+1));

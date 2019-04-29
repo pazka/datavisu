@@ -4,13 +4,14 @@ class DataElec extends Data{
     allDataMask 
     backColor
     shader
-
+    
     //circle visu
     dataCircles
     circlesNumbers
     circleCurrentPosition
     circleSpeed
     circleCurSpeed
+    trail
 
     constructor(date,life,circlesNumbers = 60,circleSpeed = 2){
         super(date,life,0,0);
@@ -38,7 +39,7 @@ class DataElec extends Data{
 
         this.backColor.loadPixels();
         let pix = this.backColor.pixels;
-       /* for (var i = 0; i < pix.length; i += 4) {
+       /* for (let i = 0; i < pix.length; i += 4) {
             pix[i] = p.abs(p.cos(i*p.millis()))*50;
             pix[i+1] =  p.abs(p.sin(i*p.millis()))*100;
             pix[i+2] =  200+p.abs(p.sin(i*p.millis()))*55;
@@ -50,10 +51,9 @@ class DataElec extends Data{
 
 
         //p.image(this.dataMask,0,0);
-
-        this.dataCircles[this.circleCurrentPosition].forEach(coords => {
-            drawTarget(_p,coords[0],coords[1],15,5,[100,100,255],255);
-        });
+            this.dataCircles[this.circleCurrentPosition].forEach(coords => {
+                drawTarget(_p,coords[0],coords[1],15,5,[100,100,255],255);
+            });
 
 
         this.circleCurrentPosition = (this.circleCurrentPosition+ (this.circleCurSpeed++ % this.circleSpeed == 0 ?1 : 0)) % this.circlesNumbers;
@@ -98,7 +98,7 @@ class Elec extends DataType{
             });
 
             //store or data graphic
-            _singleElecData.allDataMask.copy(tmpGraph,0,0,tmpGraph.width,tmpGraph.height,0,0,tmpGraph.width,tmpGraph.height);
+           // _singleElecData.allDataMask.copy(tmpGraph,0,0,tmpGraph.width,tmpGraph.height,0,0,tmpGraph.width,tmpGraph.height);
         }
         
         //give back the ref of the data to draw to dataMngr

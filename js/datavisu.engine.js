@@ -5,27 +5,35 @@ let _dataMngr;
 //économie, envirronement, vie cit , urbanisme
 
 function loadDates(){
+    let loadProg = document.getElementById('loading-progress');
     //set data timing
     Velib.browse(import_velib_json,(velib)=>{
         setTimeout(()=>{
             _dataMngr.addData(velib);
         },velib.date);
     })
+
     Event.browse(import_event_json,(event)=>{
         setTimeout(()=>{
             _dataMngr.addData(event);
         },event.date);
     })
+
+    
     Elec.browse(import_elec_json,(elec)=>{
         setTimeout(()=>{
             _dataMngr.addData(elec);
         },elec.date);
     })
+
+    
     Renc.browse(import_renc_json,(renc)=>{
         setTimeout(()=>{
             _dataMngr.addData(renc);
         },renc.date);
     })
+
+    
     Cafe.browse(import_cafe_json,(cafe)=>{
         setTimeout(()=>{
             _dataMngr.addData(cafe);
@@ -53,14 +61,14 @@ let s = function( p ) {
 
         _map = new DataMap(p.width*0.7,p.height*0.7,p.width*0.17,p.height*0.15);
         _map.setup(import_pdz_json);
-
+        _map.prepareMask(_p);
         _dataMngr = new DataManager();
         _dataMngr.updateBounds(Velib.getBounds(import_velib_json, { maxDate : 0, minDate : 999999999999999 }))
         _dataMngr.updateBounds(Event.getBounds(import_event_json, _dataMngr.datesBounds))
         
         loadDates();
 
-        var elem = document.querySelector('#loading');
+        let elem = document.querySelector('#loading');
         elem.parentNode.removeChild(elem);
     }
     
@@ -69,6 +77,7 @@ let s = function( p ) {
         _p.rect(0,0,_p.width,_p.height);
         _map.draw(_p);
         _dataMngr.drawData();
+        _map.drawMask(_p);
     }
 
    /* p.mouseClicked = (m)=>{
@@ -82,4 +91,4 @@ let s = function( p ) {
     }*/
 };
 
-var myp5 = new p5(s);
+let myp5 = new p5(s);

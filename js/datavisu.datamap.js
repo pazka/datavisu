@@ -2,6 +2,7 @@ class DataMap{
     allPoly = [];
     opacity = 100;
     img;
+    mask
 
     screenBounds ={
         lines : [ [[0.4427083333333333,0.15789473684210525],[0.6595052083333334,0.16204986149584488] ],
@@ -125,20 +126,44 @@ class DataMap{
         "\r\n"
         + Math.round(_p.millis())+
         "\r\n"+
-        JSON.stringify(_bounds)
+        JSON.stringify(_bounds)+
+        "\r\n"+
+        "vs:"+Math.round(vs())+
+        "\r\n"+
+        "vc:"+Math.round(vc())
         ;
     }
-    
+
+    prepareMask = (p)=>{
+        this.mask = p.createGraphics(p.width,p.height);
+        this.mask.fill("#000000");
+        this.mask.beginShape();
+        for (let i = 0; i < this.screenBounds.points.length; i++) {
+            this.mask.vertex(this.screenBounds.points[i][0],this.screenBounds.points[i][1])
+        }
+        this.mask.vertex(this.screenBounds.points[0][0],this.screenBounds.points[0][1])
+        this.mask.vertex(0,0)
+        this.mask.vertex(0,this.mask.width)
+        this.mask.vertex(this.mask.width,this.mask.height)
+        this.mask.vertex(0,this.mask.height)
+        this.mask.vertex(0,0)
+        this.mask.endShape(this.mask.CLOSE);
+    }
+
+    drawMask = (p)=>{
+        p.image(this.mask,0,0)
+    }
+
     getX = (x)=> {
         //get ratio
-        var position = (x - this.internalGeoBounds.minX) / (this.internalGeoBounds.maxX - this.internalGeoBounds.minX); 
+        let position = (x - this.internalGeoBounds.minX) / (this.internalGeoBounds.maxX - this.internalGeoBounds.minX); 
         //get screen pos
         return this.pos.x + this.dimension.width*position;
     }
 
     getY = (y)=>{
         //get ratio
-        var position = (y - this.internalGeoBounds.minY) / (this.internalGeoBounds.maxY - this.internalGeoBounds.minY); 
+        let position = (y - this.internalGeoBounds.minY) / (this.internalGeoBounds.maxY - this.internalGeoBounds.minY); 
         //get screen pos
         return this.pos.y + this.dimension.height - this.dimension.height*position;
     }

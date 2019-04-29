@@ -17,11 +17,11 @@ class DataRenc extends Data{
     draw(p){        
         let x = (this.age/this.life)*255;
         //p.tint(255, 100-(x/(110-x))*10)
-      /*  _map.screenBounds.lines.forEach((line)=>{
-            drawGradientTriangle(p,line,[this.pos[0],this.pos[1]],[255,0,0,50],[0,0,255,100],100);
-        })*/
+        _map.screenBounds.lines.forEach((line)=>{
+            drawGradientTriangle(p,line,[this.pos[0],this.pos[1]],[ 0,0,0,0],[ vs()*255,vc()*255,vs()*128+vc()*127,150],10);
+        })
 
-        drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
+       //drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
        // p.noTint();
     }
 }
@@ -44,7 +44,7 @@ class Renc extends DataType{
             //orchestrate data
             fn(
                 new DataRenc((_dataMngr.datesBounds.totalTimeLength / _allRencLength)*indexToCall,
-                    (_dataMngr.datesBounds.totalTimeLength / _allRencLength),
+                    (_dataMngr.datesBounds.totalTimeLength / _allRencLength)*1.6,
                     [_map.getX(data.properties.geo_point_2d[1]),_map.getY(data.properties.geo_point_2d[0])])
             );
             indexToCall++;
