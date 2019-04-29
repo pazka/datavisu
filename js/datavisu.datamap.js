@@ -135,17 +135,19 @@ class DataMap{
     }
 
     prepareMask = (p)=>{
+        let j = 0;
         this.mask = p.createGraphics(p.width,p.height);
         this.mask.fill("#000000");
+      //  this.mask.stroke("#FF0000")
         this.mask.beginShape();
         for (let i = 0; i < this.screenBounds.points.length; i++) {
-            this.mask.vertex(this.screenBounds.points[i][0],this.screenBounds.points[i][1])
+            this.mask.vertex(this.screenBounds.points[i][0],this.screenBounds.points[i][1]) 
         }
         this.mask.vertex(this.screenBounds.points[0][0],this.screenBounds.points[0][1])
         this.mask.vertex(0,0)
-        this.mask.vertex(0,this.mask.width)
-        this.mask.vertex(this.mask.width,this.mask.height)
         this.mask.vertex(0,this.mask.height)
+        this.mask.vertex(this.mask.width,this.mask.height)
+        this.mask.vertex(this.mask.width,0)
         this.mask.vertex(0,0)
         this.mask.endShape(this.mask.CLOSE);
     }
