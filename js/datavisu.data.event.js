@@ -38,8 +38,14 @@ class Event extends DataType{
     
     static browse(json,fn){
         json.forEach(data =>{
+
             if(Event.exclude(data))
                 return;
+
+            let pos_tmp = [
+                _map.getX(data.geometry.coordinates[0]),
+                _map.getY(data.geometry.coordinates[1])
+            ]
 
             let tmp_d_s = _dataMngr.getRelTime((new Date(data.properties.date_start)).getTime());
             let tmp_d_e = _dataMngr.getRelTime((new Date(data.properties.date_end)).getTime());
@@ -47,8 +53,8 @@ class Event extends DataType{
             fn(
                 new DataEvent(tmp_d_s,
                     tmp_d_e - tmp_d_s,
-                    _map.getX(data.geometry.coordinates[0]),
-                    _map.getY(data.geometry.coordinates[1]),
+                    pos_tmp[0],
+                    pos_tmp[1],
                     25+rdm()*10)
             );
         });
@@ -56,6 +62,8 @@ class Event extends DataType{
     
     static exclude(data){
         //return ( data.geometry == null || (new Date(data.properties.date_start)).getTime() <= 1415019600000 ) //< 2017
-        return ( data.geometry == null || (new Date(data.properties.date_start)).getTime() <= 1512000000000) //< 2018
+        return   data.geometry == null 
+        || (new Date(data.properties.date_start)).getTime() <= 1512000000000 
+        || !isInsidePoly([_map.getX(data.geometry.coordinates[0]),_map.getY(data.geometry.coordinates[1])],_map.screenBounds.points )   //< 2018
     }
 }

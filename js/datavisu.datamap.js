@@ -135,7 +135,10 @@ class DataMap{
     }
 
     prepareMask = (p)=>{
-        let j = 0;
+        this.mask = p.loadImage('./res/mask1.png')
+        
+        /*
+        //create balck mask
         this.mask = p.createGraphics(p.width,p.height);
         this.mask.fill("#000000");
       //  this.mask.stroke("#FF0000")
@@ -149,11 +152,13 @@ class DataMap{
         this.mask.vertex(this.mask.width,this.mask.height)
         this.mask.vertex(this.mask.width,0)
         this.mask.vertex(0,0)
-        this.mask.endShape(this.mask.CLOSE);
+        this.mask.endShape(this.mask.CLOSE);*/
     }
 
+
     drawMask = (p)=>{
-        p.image(this.mask,0,0)
+        if(!p.mouseIsPressed)
+        p.image(this.mask,0,0,p.width,p.height)
     }
 
     getX = (x)=> {

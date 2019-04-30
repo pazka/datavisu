@@ -31,7 +31,7 @@ class Velib extends DataType{
     
     static getBounds(json,dateBounds){
         json.forEach(data =>{
-            if(Velib.exclude())
+            if(Velib.exclude(data))
                 return;
 
             let tmp_d =  (new Date(data.fields.duedate)).getTime() ;
@@ -50,21 +50,22 @@ class Velib extends DataType{
 
     static browse(json,fn){
         json.forEach(data =>{
-            if(Velib.exclude())
+            let pos_tmp = [
+                _map.getX(data.geometry.coordinates[0]),
+                _map.getY(data.geometry.coordinates[1])
+            ]
+
+            if(Velib.exclude(pos_tmp))
                 return;
 
             let tmp_d = _dataMngr.getRelTime((new Date(data.fields.duedate)).getTime());
             fn(
                 new DataVelib(tmp_d,
                     6000,
-                    _map.getX(data.geometry.coordinates[0]),
-                    _map.getY(data.geometry.coordinates[1]),
+                    pos_tmp[0],
+                    pos_tmp[1],
                     30+70*rdm())
             );
         });
-    }
-
-    static exclude(){
-        return false;
     }
 }

@@ -105,7 +105,7 @@ class DataType{
         throw type + ": browse : This function is not implemented"
     }
 
-    static exclude(){
-        throw type + ": exclude : This function is not implemented"
+    static exclude(data){
+        return !isInsidePoly(data,_map.screenBounds.points)
     }
 }

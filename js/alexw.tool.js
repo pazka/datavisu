@@ -10,10 +10,10 @@ function rdm(){
 }
 
 function vs(speed = 500){
-    return (_p.sin((_p.millis()/speed)%360)+1)/2;
+    return (_p.sin((_p.millis()/speed))+1)/2;
 }
 function vc(speed = 500){
-    return (_p.cos((_p.millis()/speed)%360)+1)/2;
+    return (_p.cos((_p.millis()/speed))+1)/2;
 }
 function mr(x){
     return Math.round(x);
@@ -54,6 +54,8 @@ function isInsideCircles(coords,center,radiusMin, radiusMax){
 function isInsidePoly(point, vs) {
     // ray-casting algorithm based on
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+    // https://github.com/substack/point-in-polygon 
+
 
     let x = point[0], y = point[1];
 
@@ -118,4 +120,23 @@ function drawGradientTriangle(p,base,vertex,colorBase,colorVertex,steps,gradient
 function opacityFn(x){
     // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=103-\frac{100}{x+1}-\frac{x}{101-x}
     return (100-(255/x+1)-(x/(255-x)))
+}
+
+function drawConcentricLines(p,center,length,lengthVariance,padding,paddingVariance,widthRect,nbLines){
+
+    let img = p.createGraphics((length+padding+lengthVariance+nbLines)*2,(length+padding+lengthVariance+nbLines)*2)
+    img.translate(img.width / 2, img.height / 2);
+
+    let angle = (360)*vs(nbLines*100000)
+
+    for (let i = 0; i < nbLines; i++) {
+        img.rotate(angle*vs(50000000)+i)
+        img.noStroke()
+        let vari = (i*100)%255
+        img.fill([(vari + (i*257))%255,(vari + (i*10))%255,(vari + (i*200))%255,200])
+        img.rect(-widthRect/2,padding+(i%paddingVariance*(vs(400)+1))+padding,widthRect,length+(i%lengthVariance*vc(500)))
+    }
+
+    p.image(img,center[0]-img.width/2,center[1]-img.height/2)
+    delete img
 }
