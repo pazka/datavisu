@@ -4,13 +4,6 @@ function opacityFn(x){
     // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=103-\frac{100}{x+1}-\frac{x}{101-x}
     return (255-(255/x+1)-(x/(255-x)))
 }
-class Rencs extends Data{
-    draw(p){
-        _allRenc.forEach((data)=> {
-            data.draw(p)
-        })
-    }
-}
 
 class DataRenc extends Data{
     index
@@ -28,7 +21,7 @@ class DataRenc extends Data{
             drawGradientTriangle(p,line,[this.pos[0],this.pos[1]],[ 0,0,0,0],[ vs()*255,vc()*255,vs()*128+vc()*127,150],10);
         })*/
 
-        drawConcentricLines(p,this.pos,50,300,2,30,5,2)
+        drawConcentricLines(p,this.pos,50,300,2,30,5,100)
        //drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
        // p.noTint();
     }
@@ -36,23 +29,27 @@ class DataRenc extends Data{
 
 let _allRencPolyRendered = [];
 let _allRencLength = 0;
-let _allRenc = [];
 
 class Renc extends DataType{
     type = "Renc";
 
     static browse(json,fn){
+        let indexToCall = 0;
         _allRencLength = 0;
 
-        json.forEach((data) =>{
+        json.forEach(() =>{
             _allRencLength++;
-            _allRenc.push(new DataRenc(0,0,[_map.getX(data.properties.geo_point_2d[1]),_map.getY(data.properties.geo_point_2d[0])]))
         })
         
-        //orchestrate data
-        fn(
-            new Rencs(0,_dataMngr.datesBounds.totalTimeLength)
-        );
+        json.forEach(data =>{
+            //orchestrate data
+            fn(
+                new DataRenc((_dataMngr.datesBounds.totalTimeLength / _allRencLength)*indexToCall,
+                    (_dataMngr.datesBounds.totalTimeLength / _allRencLength)*1.6,
+                    [_map.getX(data.properties.geo_point_2d[1]),_map.getY(data.properties.geo_point_2d[0])])
+            );
+            indexToCall++;
+        });
     }
     
     static exclude(data){
