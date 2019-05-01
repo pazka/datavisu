@@ -69,7 +69,7 @@ class Elec extends DataType{
         if(_singleElecData == undefined){
             //instantiate elec
             _singleElecData = new DataElec( _dataMngr.time_start,_dataMngr.datesBounds.totalTimeLength);
-            let tmpGraph =  _p.createGraphics(_p.width,_p.height);
+          //  let tmpGraph =  _p.createGraphics(_p.width,_p.height);
             let coords;
             _singleElecData.dataCircles = [];
             for (let i = 0; i < _singleElecData.circlesNumbers; i++) {
@@ -94,11 +94,11 @@ class Elec extends DataType{
                 }
 
                 //draw the mask inside the elecdata
-                drawTarget(tmpGraph,coords[0],coords[1],15,30,[100,100,255],100);
+            //    drawTarget(tmpGraph,coords[0],coords[1],15,30,[100,100,255],100);
             });
 
             //store or data graphic
-           // _singleElecData.allDataMask.copy(tmpGraph,0,0,tmpGraph.width,tmpGraph.height,0,0,tmpGraph.width,tmpGraph.height);
+           // _singleElecData.allDataMask.copy(tmpGraph,0,0,tmpGraph.width,tmpGraph.height,0,0,tmpGraph.width,tmpGraph.height);*/
         }
         
         //give back the ref of the data to draw to dataMngr

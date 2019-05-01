@@ -7,11 +7,12 @@ let _dataMngr;
 function loadDates(){
     let loadProg = document.getElementById('loading-progress');
     //set data timing
+    /*
     Velib.browse(import_velib_json,(velib)=>{
         setTimeout(()=>{
             _dataMngr.addData(velib);
         },velib.date);
-    })
+    })*/
 
     Event.browse(import_event_json,(event)=>{
         setTimeout(()=>{

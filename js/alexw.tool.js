@@ -15,6 +15,9 @@ function vs(speed = 500){
 function vc(speed = 500){
     return (_p.cos((_p.millis()/speed))+1)/2;
 }
+function vs1(speed = 500){
+    return (_p.sin((_p.millis()/speed)));
+}
 function mr(x){
     return Math.round(x);
 }
@@ -123,20 +126,19 @@ function opacityFn(x){
 }
 
 function drawConcentricLines(p,center,length,lengthVariance,padding,paddingVariance,widthRect,nbLines){
-
-    let img = p.createGraphics((length+padding+lengthVariance+nbLines)*2,(length+padding+lengthVariance+nbLines)*2)
+    let img = p.createGraphics((length+padding+lengthVariance+paddingVariance+50)*2,(length+padding+lengthVariance+paddingVariance+50)*2)
+    
     img.translate(img.width / 2, img.height / 2);
+    let angle = (360)*vs(nbLines*100000000)
 
-    let angle = (360)*vs(nbLines*100000)
-
+    img.noStroke()
     for (let i = 0; i < nbLines; i++) {
         img.rotate(angle*vs(50000000)+i)
-        img.noStroke()
         let vari = (i*100)%255
-        img.fill([(vari + (i*257))%255,(vari + (i*10))%255,(vari + (i*200))%255,200])
-        img.rect(-widthRect/2,padding+(i%paddingVariance*(vs(400)+1))+padding,widthRect,length+(i%lengthVariance*vc(500)))
-    }
-
-    p.image(img,center[0]-img.width/2,center[1]-img.height/2)
-    delete img
+        img.fill([(i)%55,(i*12)%150,200+(i*23)%55])
+        img.rect((vs1(700)*img.width/20)-widthRect/2,padding+(i%paddingVariance*(vs(400)+1))+padding,widthRect,length+(i%lengthVariance*vc(500)))
+    }  
+    p.image(img,center[0]-img.width/2,center[1]-img.height/2,img.width,img.height)
+    
+    img.remove()
 }
