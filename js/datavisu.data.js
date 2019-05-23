@@ -1,7 +1,7 @@
 class DataManager{
     allData = [];
     allDataToDisplay = [];
-    dataToClean = [];
+    _dataIndexToClean = [];
     time_start;
     
     datesBounds = {
@@ -29,17 +29,22 @@ class DataManager{
 
     drawData(){
         //draw
+        let i = 0;
         this.allDataToDisplay.forEach(data => {
-            data.draw(_p);
-            if(data.hasLived())
-                this.dataToClean.push(data);
+            if(data.age > 0){
+                data.draw(_p);
+
+                if(data.hasLived)
+                    this._dataIndexToClean.push(i);
+            }
+            i++
         });
 
         //clean
-        this.dataToClean.forEach(data => {
-            this.allDataToDisplay.splice(this.allDataToDisplay.indexOf(data),1);
+        this._dataIndexToClean.forEach(dataIndex => {
+            this.allDataToDisplay.splice(dataIndex,1);
         });
-        this.dataToClean = [];
+        this._dataIndexToClean = [];
     }
 
     addData(data){
@@ -52,12 +57,17 @@ class DataManager{
         return Math.round(pos* this.datesBounds.totalTimeLength);
     }
 
+    getTimeRef(){
+       // return _p.millis();
+       return _p.frameCount / frameRate * 1000;
+    }
+
     timeStart(){
-        this.time_start = _p.millis();
+        this.time_start = _dataMngr.getTimeRef();
     }
     
     getCurrentProjectedDate(){
-        let ratio = (_p.millis() - this.time_start )/this.datesBounds.totalTimeLength;
+        let ratio = (_dataMngr.getTimeRef() - this.time_start )/this.datesBounds.totalTimeLength;
         return new Date(this.datesBounds.minDate + ratio * this.datesBounds.dateSpan);
     }
 }
@@ -81,12 +91,12 @@ class Data{
         this.date = _date;
     }
 
-    hasLived(){
-        return _p.millis() - this.born >= this.life;
+    get hasLived(){
+        return _dataMngr.getTimeRef() - this.born >= this.life;
     }
 
     get age (){
-        return _p.millis() - this.born;
+        return _dataMngr.getTimeRef() - this.born;
     }
 
     draw(p){

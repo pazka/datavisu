@@ -10,13 +10,16 @@ function rdm(){
 }
 
 function vs(speed = 500){
-    return (_p.sin((_p.millis()/speed))+1)/2;
+    return (_p.sin((_dataMngr.getTimeRef()/speed))+1)/2;
 }
 function vc(speed = 500){
-    return (_p.cos((_p.millis()/speed))+1)/2;
+    return (_p.cos((_dataMngr.getTimeRef()/speed))+1)/2;
 }
 function vs1(speed = 500){
-    return (_p.sin((_p.millis()/speed)));
+    return (_p.sin((_dataMngr.getTimeRef()/speed)));
+}
+function vc1(speed = 500){
+    return (_p.cos((_dataMngr.getTimeRef()/speed)));
 }
 function mr(x){
     return Math.round(x);
@@ -125,18 +128,18 @@ function opacityFn(x){
     return (100-(255/x+1)-(x/(255-x)))
 }
 
-function drawConcentricLines(p,center,length,lengthVariance,padding,paddingVariance,widthRect,nbLines){
+function drawConcentricLines(p,center,length,lengthVariance,padding,paddingVariance,widthRect,nbLines,opacity = 255){
     let img = p.createGraphics((length+padding+lengthVariance+paddingVariance+50)*2,(length+padding+lengthVariance+paddingVariance+50)*2)
     
     img.translate(img.width / 2, img.height / 2);
-    let angle = (360)*vs(nbLines*100000000)
+    let angle = (360)*vs(1000000000)
 
     img.noStroke()
     for (let i = 0; i < nbLines; i++) {
-        img.rotate(angle*vs(50000000)+i)
+        img.rotate(angle*vs(5000000000)+i)
         let vari = (i*100)%255
-        img.fill([(i)%55,(i*12)%150,200+(i*23)%55])
-        img.rect((vs1(700)*img.width/20)-widthRect/2,padding+(i%paddingVariance*(vs(400)+1))+padding,widthRect,length+(i%lengthVariance*vc(500)))
+        img.fill([200+(i)%55,(i*12)%205,(i*23)%55,opacity])
+        img.rect((vs1(5000)*img.width/20)-widthRect/2,padding+(i%paddingVariance*(vs(8000)+1))+padding,widthRect,length+(i%lengthVariance*vc(9000)))
     }  
     p.image(img,center[0]-img.width/2,center[1]-img.height/2,img.width,img.height)
     

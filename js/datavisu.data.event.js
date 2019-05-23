@@ -8,8 +8,8 @@ class DataEvent extends Data{
     }
 
     draw(p){        
-        let x = (this.age/this.life)*255;
-        drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [0,255,0], 255- x); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        let x = (this.age/this.life);
+        drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,205,50], 255*(1-Math.abs((0.5-x)*2))); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
         super.draw(p);
     }
 }
@@ -55,7 +55,7 @@ class Event extends DataType{
                     tmp_d_e - tmp_d_s,
                     pos_tmp[0],
                     pos_tmp[1],
-                    25+rdm()*10)
+                    3)
             );
         });
     }

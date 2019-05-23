@@ -10,18 +10,18 @@ class DataVelib extends Data{
     }
 
     draw(p){
-        let x = (this.age/this.life)*255;
-        //drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,50,0], 100- x/(110-x)*10); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
-        drawTargetBis(p,
+        let x = (this.age/this.life);
+        drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,250,50], 255*(1-Math.abs((0.5-x)*2))); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        /*drawTargetBis(p,
         this.pos.x + (- 2 + rdm()*5),
         this.pos.y + (- 2 + rdm()*5),
         this.size,
         this.colors.length,
         this.colors,
          255-x);
-
+*/
         p.fill(100);
-        p.text(Math.round(x),this.pos.x,this.pos.y-30)
+       // p.text(Math.round(x),this.pos.x,this.pos.y-30)
         super.draw(p);
     }
 }
@@ -64,7 +64,7 @@ class Velib extends DataType{
                     6000,
                     pos_tmp[0],
                     pos_tmp[1],
-                    30+70*rdm())
+                    3)
             );
         });
     }

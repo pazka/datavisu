@@ -13,7 +13,7 @@ class DataElec extends Data{
     circleCurSpeed
     trail
 
-    constructor(date,life,circlesNumbers = 60,circleSpeed = 2){
+    constructor(date,life,circlesNumbers = 6,circleSpeed = 15){
         super(date,life,0,0);
 
         this.circleSpeed = circleSpeed;
@@ -52,7 +52,7 @@ class DataElec extends Data{
 
         //p.image(this.dataMask,0,0);
             this.dataCircles[this.circleCurrentPosition].forEach(coords => {
-                drawTarget(_p,coords[0],coords[1],15,5,[100,100,255],255);
+                drawTarget(_p,coords[0],coords[1],3,5,[255,200,55],vs1(500)*255);
             });
 
 

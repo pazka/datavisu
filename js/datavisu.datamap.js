@@ -106,7 +106,7 @@ class DataMap{
 
         this.img.stroke(20,10,255,this.opacity);
         this.img.strokeWeight(2);
-        this.img.fill('#000000');
+        this.img.noFill();
 
         this.allPoly.forEach(poly => {
             this.img.beginShape();
@@ -124,7 +124,7 @@ class DataMap{
         + "\r\n" +
         JSON.stringify(_dataMngr.datesBounds)+
         "\r\n"
-        + Math.round(_p.millis())+
+        + Math.round(_dataMngr.getTimeRef())+
         "\r\n"+
         JSON.stringify(_bounds)+
         "\r\n"+
@@ -154,7 +154,6 @@ class DataMap{
         this.mask.vertex(0,0)
         this.mask.endShape(this.mask.CLOSE);*/
     }
-
 
     drawMask = (p)=>{
         if(!p.mouseIsPressed)

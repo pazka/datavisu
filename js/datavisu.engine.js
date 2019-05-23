@@ -1,52 +1,42 @@
 let _map;
 let _p;
 let _dataMngr;
-
+let frameRate = 30;
 //économie, envirronement, vie cit , urbanisme
 
 function loadDates(){
     let loadProg = document.getElementById('loading-progress');
     //set data timing
-    /*
+    
     Velib.browse(import_velib_json,(velib)=>{
-        setTimeout(()=>{
             _dataMngr.addData(velib);
-        },velib.date);
-    })*/
+    })
 
     Event.browse(import_event_json,(event)=>{
-        setTimeout(()=>{
             _dataMngr.addData(event);
-        },event.date);
     })
 
     
     Elec.browse(import_elec_json,(elec)=>{
-        setTimeout(()=>{
             _dataMngr.addData(elec);
-        },elec.date);
     })
 
     
     Renc.browse(import_renc_json,(renc)=>{
-        setTimeout(()=>{
             _dataMngr.addData(renc);
-        },renc.date);
     })
 
     
     Cafe.browse(import_cafe_json,(cafe)=>{
-        setTimeout(()=>{
             _dataMngr.addData(cafe);
-        },cafe.date);
     })
 
     //loop
     _dataMngr.timeStart();
-
+/*
     setTimeout(()=>{
         loadDates();
-    },_dataMngr.datesBounds.totalTimeLength);
+    },_dataMngr.datesBounds.totalTimeLength);*/
 }
 let _bounds = [];
 let index = 0;
@@ -56,7 +46,7 @@ let s = function( p ) {
         let cnv = p.createCanvas(window.innerWidth, window.innerHeight);
         cnv.parent("#p5-container");
         p.noStroke();
-      //  p.frameRate(30);
+        p.frameRate(frameRate);
         p.background('#000000');
         p.fill('#000000');
 
