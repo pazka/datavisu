@@ -1,7 +1,9 @@
 let _map;
 let _p;
 let _dataMngr;
-let frameRate = 30;
+let _frameRate = 30;
+let _canvas;
+let _isCapturing = false;
 //économie, envirronement, vie cit , urbanisme
 
 function loadDates(){
@@ -20,7 +22,7 @@ function loadDates(){
     Elec.browse(import_elec_json,(elec)=>{
             _dataMngr.addData(elec);
     })
-
+    
     
     Renc.browse(import_renc_json,(renc)=>{
             _dataMngr.addData(renc);
@@ -43,10 +45,10 @@ let index = 0;
 let s = function( p ) {
     _p = p;
     p.setup = ()=> {
-        let cnv = p.createCanvas(window.innerWidth, window.innerHeight);
-        cnv.parent("#p5-container");
+        _canvas = p.createCanvas(window.innerWidth, window.innerHeight);
+        _canvas.parent("#p5-container");
         p.noStroke();
-        p.frameRate(frameRate);
+        p.frameRate(_frameRate);
         p.background('#000000');
         p.fill('#000000');
 
@@ -61,6 +63,9 @@ let s = function( p ) {
 
         let elem = document.querySelector('#loading');
         elem.parentNode.removeChild(elem);
+        
+        if(_isCapturing)
+            _capturer.start();
     }
     
     p.draw = ()=>{
@@ -69,6 +74,8 @@ let s = function( p ) {
         _map.draw(_p);
         _dataMngr.drawData();
         _map.drawMask(_p);
+        if(_isCapturing)
+            _capturer.capture( _canvas.canvas );
     }
 
    /* p.mouseClicked = (m)=>{
@@ -80,6 +87,15 @@ let s = function( p ) {
         })
         
     }*/
+    
+    
+    if(_isCapturing){
+        p.keyPressed  = function (){
+            if (p.key == "s"){
+                _capturer.save()
+            }
+        }
+    }
 };
 
 let myp5 = new p5(s);

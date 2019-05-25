@@ -123,8 +123,10 @@ class DataMap{
         document.getElementById("logs").innerHTML = _dataMngr.getCurrentProjectedDate().toLocaleString('fr-FR', { timeZone: 'UTC' })
         + "\r\n" +
         JSON.stringify(_dataMngr.datesBounds)+
-        "\r\n"
-        + Math.round(_dataMngr.getTimeRef())+
+        "\r\n"+
+         Math.round(_dataMngr.getTimeRef())+
+        "\r\n"+
+        "Progress : " + Math.round((_dataMngr.getTimeRef())/( _dataMngr.datesBounds.totalTimeLength)*100,2) + "%" +
         "\r\n"+
         JSON.stringify(_bounds)+
         "\r\n"+

@@ -5,6 +5,7 @@ class DataManager{
     time_start;
     
     datesBounds = {
+        /// titme total for animation in milliseconds
         totalTimeLength : 3 * 60000,
         maxDate : 0,
         minDate : 99999999999999,
@@ -59,7 +60,7 @@ class DataManager{
 
     getTimeRef(){
        // return _p.millis();
-       return _p.frameCount / frameRate * 1000;
+       return _p.frameCount / _frameRate * 1000;
     }
 
     timeStart(){
