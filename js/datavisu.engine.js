@@ -60,6 +60,12 @@ let s = function( p ) {
         _dataMngr.updateBounds(Event.getBounds(import_event_json, _dataMngr.datesBounds))
         
         loadDates();
+        
+        // Add an initial set of boids into the system
+        for (let i = 0; i < 50; i++) {
+          let b = new Boid(_p.width / 2,_p.height / 2);
+          _flock.addBoid(b);
+        }
 
         let elem = document.querySelector('#loading');
         elem.parentNode.removeChild(elem);
@@ -74,6 +80,7 @@ let s = function( p ) {
         _map.draw(_p);
         _dataMngr.drawData();
         _map.drawMask(_p);
+        _flock.run();
         if(_isCapturing)
             _capturer.capture( _canvas.canvas );
     }
