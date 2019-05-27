@@ -66,7 +66,7 @@ let s = function (p) {
         loadDates();
 
         // Add an initial set of boids into the system
-        for (let i = 0; i < 400; i++) {
+        for (let i = 0; i < 100; i++) {
             let b = new Boid(_p.width / 2, _p.height / 2);
             _flock.addBoid(b);
         }

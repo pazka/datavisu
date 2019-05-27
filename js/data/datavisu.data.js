@@ -82,6 +82,7 @@ class Data{
         x : 0,
         y : 0
     }
+    noise = 1 + rdm()*99
 
     constructor(_date,_life = 10,_x,_y){
         this.life = _life; // in millisecond

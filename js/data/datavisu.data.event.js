@@ -9,7 +9,11 @@ class DataEvent extends Data{
 
     draw(p){        
         let x = (this.age/this.life);
-        drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,205,50], 255*(1-Math.abs((0.5-x)*2))); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        // drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,205,50], 255*(1-Math.abs((0.5-x)*2))); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        // super.draw(p);
+        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, 
+        [vs(100)*127+vc(100)*127,vs(200)*127+vc(300)*127,vs(300)*127+vc(600)*127, 255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+
         super.draw(p);
     }
 }

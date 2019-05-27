@@ -5,13 +5,13 @@ class DataVelib extends Data{
     constructor(date,life,x,y,_size = 15){
         super(date,life,x,y);
         this.size = _size;
-        this.colors= 
+        this.colors=
         Array.from(Array(2 + Math.round(rdm()*5)).keys()).map(i=>[rdm()*255, rdm()*255, rdm()*255])
     }
 
     draw(p){
         let x = (this.age/this.life);
-        drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,250,50], 255*(1-Math.abs((0.5-x)*2))); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        // drawTarget(p,this.pos.x, this.pos.y, this.size, 10, [255,250,50], 255*(1-Math.abs((0.5-x)*2))); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
         /*drawTargetBis(p,
         this.pos.x + (- 2 + rdm()*5),
         this.pos.y + (- 2 + rdm()*5),
@@ -19,8 +19,11 @@ class DataVelib extends Data{
         this.colors.length,
         this.colors,
          255-x);
-*/
-        p.fill(100);
+
+*/        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*this.noise*100)*50*easeInOut(x),this.noise, 
+        [vs(100)*127+vc(100)*127,vs(200)*127+vc(300)*127,vs(300)*127+vc(600)*127, 255*easeInOut(x)]) // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+
+        // p.fill(100);
        // p.text(Math.round(x),this.pos.x,this.pos.y-30)
         super.draw(p);
     }
@@ -28,7 +31,7 @@ class DataVelib extends Data{
 
 class Velib extends DataType{
     type = "Velib";
-    
+
     static getBounds(json,dateBounds){
         json.forEach(data =>{
             if(Velib.exclude(data))
@@ -44,7 +47,7 @@ class Velib extends DataType{
                 dateBounds.maxDate = tmp_d;
             }
         });
-    
+
         return dateBounds;
     }
 

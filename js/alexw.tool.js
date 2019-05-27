@@ -24,6 +24,9 @@ function vc1(speed = 500) {
 function mr(x) {
     return Math.round(x);
 }
+function easeInOut(x){
+    return (1-Math.abs((0.5-x)*2))
+}
 
 let logs = "";
 function _log(str) {
@@ -117,3 +120,23 @@ function opacityFn(x) {
     // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=103-\frac{100}{x+1}-\frac{x}{101-x}
     return (100 - (255 / x + 1) - (x / (255 - x)))
 }
+
+function drawStar(p, x, y, radius1, radius2, npoints,color) {
+    p.push()
+    p.noStroke()
+    p.fill(color)
+    let angle = p.TWO_PI / npoints;
+    let halfAngle = angle / 2.0;
+    p.beginShape();
+    for (let a = 0; a < p.TWO_PI; a += angle) {
+      let sx = x + p.cos(a) * radius2;
+      let sy = y + p.sin(a) * radius2;
+      p.vertex(sx, sy);
+      sx = x + p.cos(a + halfAngle) * radius1;
+      sy = y + p.sin(a + halfAngle) * radius1;
+      p.vertex(sx, sy);
+    }
+    p.endShape(p.CLOSE);
+    p.pop()
+  }
+  

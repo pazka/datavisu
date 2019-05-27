@@ -21,7 +21,7 @@ class DataRenc extends Data{
             drawGradientTriangle(p,line,[this.pos[0],this.pos[1]],[ 0,0,0,0],[ vs()*255,vc()*255,vs()*128+vc()*127,150],10);
         })*/
 
-        drawConcentricLines(p,this.pos,50*x,10,2,30,5,500,255*(1-Math.abs((0.5-x)*2)))
+        drawConcentricLines(p,this.pos,50*x,10,2,30,5,500,255*easeInOut(x))
        //drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
        // p.noTint();
     }

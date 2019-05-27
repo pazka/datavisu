@@ -1,6 +1,6 @@
 class DataMap {
     allPoly = [];
-    opacity = 50;
+    opacity = 20;
     mapStrokeImg;
     mapMaskImg;
 
