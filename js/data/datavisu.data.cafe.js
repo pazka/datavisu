@@ -38,7 +38,7 @@ class Cafe extends DataType{
                 fn(
                     new DataCafe((_dataMngr.datesBounds.totalTimeLength / _allCafeLength)*indexToCall,
                         (_dataMngr.datesBounds.totalTimeLength / _allCafeLength),
-                        [_map.getX(data.geometry.coordinates[1]),_map.getY(data.geometry.coordinates[0])])
+                        [_map.getX(data.geometry.coordinates[0]),_map.getY(data.geometry.coordinates[1])])
                 );
                 indexToCall++
             }

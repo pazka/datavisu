@@ -37,8 +37,8 @@ function Boid(x, y) {
   this.r = 3.0;
   this.maxspeed = 3;    // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
-  this.colors= 
-  Array.from(Array(2 + Math.round(rdm()*5)).keys()).map(i=>[rdm()*255, rdm()*255, rdm()*255])
+  this.colors= [100+rdm()*55, rdm()*50, 100+rdm()*55,255]
+  //  this.colors = [255,255,255]
 }
 
 Boid.prototype.run = function(boids) {
@@ -60,14 +60,14 @@ Boid.prototype.flock = function(boids) {
   let coh = this.cohesion(boids);   // Cohesion
 
   // Arbitrarily weight these forces
-  sep.mult(2.5);
-  ali.mult(0.1);
-  coh.mult(1);
+  sep.mult(10);
+  ali.mult(1);
+  coh.mult(5);
   
   //Add force to converge toward cursor
-  towardCursor = _p.createVector( _p.mouseX - this.position.x  , _p.mouseY - this.position.y)
-  towardCursor.mult(0.005)
-  this.applyForce(towardCursor);
+  towardPoint = _p.createVector( _flock.objective[0] - this.position.x  , _flock.objective[1]- this.position.y)
+  towardPoint.mult(0.005)
+  this.applyForce(towardPoint);
 
   // Add the force vectors to acceleration
   this.applyForce(sep);
@@ -117,13 +117,17 @@ Boid.prototype.seek = function(target) {
 //   p.pop();
 // }
 Boid.prototype.render = function(p){
-     drawTargetBis(p,
-        this.position.x ,
-        this.position.y ,
-        10,
-        this.colors.length,
-        this.colors,
-         255);
+    //  drawTargetBis(p,
+    //     this.position.x ,
+    //     this.position.y ,
+    //     10,
+    //     this.colors.length,
+    //     this.colors,
+    //      255);
+    p.push()
+    p.fill(this.colors)
+    p.ellipse(this.position.x,this.position.y,5,5)
+    p.pop()
 }
 
 // Wraparound

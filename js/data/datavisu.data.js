@@ -8,7 +8,7 @@ class DataManager{
         /// titme total for animation in milliseconds
         totalTimeLength : 3 * 60000,
         maxDate : 0,
-        minDate : 99999999999999,
+        minDate : Infinity,
         _typedMinDate :0,
         _typedMaxDate : 0,
         dateSpan : 0
@@ -40,6 +40,7 @@ class DataManager{
             }
             i++
         });
+        
 
         //clean
         this._dataIndexToClean.forEach(dataIndex => {
