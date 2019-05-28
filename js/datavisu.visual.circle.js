@@ -88,6 +88,12 @@ function drawConcentricLines(p, center, length, lengthVariance, padding, padding
 }
 
 
+function stupidCircle(p,x,y,size,color){
+    p.push()
+    p.fill(color)
+    p.ellipse(x,y,size)
+    p.pop()
+}
 
 function drawTarget(p, xloc, yloc, size, num, color, opacity = 255) {
     p.noStroke();

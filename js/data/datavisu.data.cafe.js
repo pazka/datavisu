@@ -11,10 +11,10 @@ class DataCafe extends Data{
         let x = (this.age/this.life);
         //p.tint(255, 100-(x/(110-x))*10)
         //p.image(_allCafePolyRendered[this.index],0,0); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
-        p.push();
-        p.translate( 0.2, 0.5);
-        drawStar(p,this.pos[0], this.pos[1], 30,vc(this.noise*this.noise*100)*30*easeInOut(x),this.noise, [vs(200)*200+55,vs(250)*100+155,vs(200)*55, 255*(1-Math.abs((0.5-x)*2))]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
-        p.pop()
+        // p.push();
+        // p.translate( 0.2, 0.5);
+        // drawStar(p,this.pos[0], this.pos[1], 30,vc(this.noise*this.noise*100)*30*easeInOut(x),this.noise, [vs(200)*200+55,vs(250)*100+155,vs(200)*55, 255*(1-Math.abs((0.5-x)*2))]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        // p.pop()
         // p.noTint();
         super.draw(p);
     }

@@ -7,7 +7,6 @@ class DataTraveler extends Data{
     }
 
     draw(p){
-        console.log("im here !")
         _flock.objective = this.pos
     }
 }

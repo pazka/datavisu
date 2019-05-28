@@ -35,7 +35,7 @@ function Boid(x, y) {
   this.velocity = _p.createVector(_p.random(-1, 1), _p.random(-1, 1));
   this.position = _p.createVector(x, y);
   this.r = 3.0;
-  this.maxspeed = 3;    // Maximum speed
+  this.maxspeed = 2;    // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
   this.colors= [100+rdm()*55, rdm()*50, 100+rdm()*55,255]
   //  this.colors = [255,255,255]
@@ -60,7 +60,7 @@ Boid.prototype.flock = function(boids) {
   let coh = this.cohesion(boids);   // Cohesion
 
   // Arbitrarily weight these forces
-  sep.mult(10);
+  sep.mult(70);
   ali.mult(1);
   coh.mult(5);
   

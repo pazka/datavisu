@@ -13,7 +13,7 @@ class DataElec extends Data{
     circleCurSpeed
     trail
 
-    constructor(date,life,circlesNumbers = 6,circleSpeed = 15){
+    constructor(date,life,circlesNumbers = 10,circleSpeed = 2){
         super(date,life,0,0);
 
         this.circleSpeed = circleSpeed;
@@ -25,10 +25,6 @@ class DataElec extends Data{
 
      //   this.backColor = _p.createImage(_map.dimension.width,_map.dimension.height);
      //   this.shader.set("u_resolution", _p.width * 1.0, _p.heigh * 1.0 );
-    }
-
-    hasLived(){
-        super.hasLived();
     }
 
     draw(p){
@@ -51,12 +47,15 @@ class DataElec extends Data{
 
 
         //p.image(this.dataMask,0,0);
-            this.dataCircles[this.circleCurrentPosition].forEach(coords => {
-                drawTarget(_p,coords[0],coords[1],3,5,[255,200,55],vs1(500)*255);
-            });
+        this.dataCircles[this.circleCurrentPosition].forEach(coords => {
+            drawTarget(_p,coords[0],coords[1],3,5,[255,200,55],vs1(500)*255);
+        });
 
+        //update currentcircle if speed has donne loop
+        this.circleCurSpeed = (this.circleCurSpeed+1) % this.circleSpeed
 
-        this.circleCurrentPosition = (this.circleCurrentPosition+ (this.circleCurSpeed++ % this.circleSpeed == 0 ?1 : 0)) % this.circlesNumbers;
+        if(this.circleCurSpeed == 0)
+            this.circleCurrentPosition = (this.circleCurrentPosition+ 1)% this.circlesNumbers;
     }
 }
 
@@ -68,7 +67,7 @@ class Elec extends DataType{
     static browse(json,fn){
         if(_singleElecData == undefined){
             //instantiate elec
-            _singleElecData = new DataElec( _dataMngr.time_start,_dataMngr.datesBounds.totalTimeLength);
+            _singleElecData = new DataElec(_dataMngr.getTimeRef(),_dataMngr.datesBounds.totalTimeLength);
           //  let tmpGraph =  _p.createGraphics(_p.width,_p.height);
             let coords;
             _singleElecData.dataCircles = [];
@@ -79,7 +78,7 @@ class Elec extends DataType{
             //fill single data visualisation
             
             let center  = [_p.width/2,_p.height/2]
-            let radius = ((_map.dimension.width/2)/_singleElecData.circlesNumbers);
+            let radius = ((_map.dimension.height/1.5)/_singleElecData.circlesNumbers);
             json.forEach(data =>{
                 if(Elec.exclude(data))
                     return;

@@ -20,8 +20,8 @@ class DataVelib extends Data{
         this.colors,
          255-x);
 
-*/        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*this.noise*100)*50*easeInOut(x),this.noise, 
-        [vs(100)*127+vc(100)*127,vs(200)*127+vc(300)*127,vs(300)*127+vc(600)*127, 255*easeInOut(x)]) // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+*/ //        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*this.noise*100)*50*easeInOut(x),this.noise, 
+//         [vs(100)*127+vc(100)*127,vs(200)*127+vc(300)*127,vs(300)*127+vc(600)*127, 255*easeInOut(x)]) // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
 
         // p.fill(100);
        // p.text(Math.round(x),this.pos.x,this.pos.y-30)
@@ -31,6 +31,7 @@ class DataVelib extends Data{
 
 class Velib extends DataType{
     type = "Velib";
+    static get avgLife(){return  _dataMngr.datesBounds.totalTimeLength / 100};
 
     static getBounds(json,dateBounds){
         json.forEach(data =>{
@@ -64,7 +65,7 @@ class Velib extends DataType{
             let tmp_d = _dataMngr.getRelTime((new Date(data.fields.duedate)).getTime());
             fn(
                 new DataVelib(tmp_d,
-                    6000,
+                    Velib.avgLife,
                     pos_tmp[0],
                     pos_tmp[1],
                     3)

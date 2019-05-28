@@ -2,16 +2,60 @@ class DataManager{
     allData = [];
     allDataToDisplay = [];
     _dataIndexToClean = [];
-    time_start;
-    
+    time_start = 0;
+
+    //phase init at 0 for init purpose
+    phase = 0;
+    nbPhase = 3;
+
     datesBounds = {
         /// titme total for animation in milliseconds
-        totalTimeLength : 3 * 60000,
+        totalTimeLength : 2 * 60 * 1000,
+       // totalTimeLength : 6000,
         maxDate : 0,
         minDate : Infinity,
         _typedMinDate :0,
         _typedMaxDate : 0,
         dateSpan : 0
+    }
+
+    loadDates() {
+        let loadProg = document.getElementById('loading-progress');
+        //set data timing
+        
+        if(_dataMngr.isPhase(1)){
+            _flock.boids=myBoids
+            Traveler.browse(import_traveler_json, (travel) => {
+                _dataMngr.addData(travel);
+            })
+        }else{
+            _flock.boids=[]
+        }
+    
+        if(_dataMngr.isPhase(2)){
+            Elec.browse(import_elec_json, (elec) => {
+                _dataMngr.addData(elec);
+            })
+        
+        
+            Renc.browse(import_renc_json, (renc) => {
+                _dataMngr.addData(renc);
+            })
+        }
+        
+        if(_dataMngr.isPhase(3)){
+            Velib.browse(import_velib_json, (velib) => {
+                _dataMngr.addData(velib);
+            })
+    
+            Event.browse(import_event_json, (event) => {
+                _dataMngr.addData(event);
+            })
+    
+            Cafe.browse(import_cafe_json, (cafe) => {
+                _dataMngr.addData(cafe);
+            })
+        }
     }
 
     updateBounds(newBounds){
@@ -47,6 +91,11 @@ class DataManager{
             this.allDataToDisplay.splice(dataIndex,1);
         });
         this._dataIndexToClean = [];
+
+        //loop
+        if(this.getTimeRef() > this.datesBounds.totalTimeLength + Velib.avgLife){
+            this.newPhase();
+        }
     }
 
     addData(data){
@@ -59,13 +108,41 @@ class DataManager{
         return Math.round(pos* this.datesBounds.totalTimeLength);
     }
 
+
+
     getTimeRef(){
        // return _p.millis();
-       return _p.frameCount / _frameRate * 1000;
+       return ( _p.frameCount / _frameRate * 1000 ) - this.time_start;
     }
 
-    timeStart(){
-        this.time_start = _dataMngr.getTimeRef();
+    startTime(){
+        this.time_start = ( _p.frameCount / _frameRate * 1000 );
+    }
+
+    newPhase(){
+        //TODO faire ça propre
+        this.phase = this.phase +1;
+        if(this.isEnded){
+            this.phase = 1;
+
+            if(_isCapturing){
+                _capturer.save()
+                this.phase = 5
+                _stop = true
+            }
+        }
+
+        this.startTime()
+        this.loadDates()
+
+        return  this.phase > this.nbPhase
+    }
+
+    get isEnded(){
+        return this.phase > this.nbPhase
+    }
+    isPhase(phase){
+        return this.phase == phase
     }
     
     getCurrentProjectedDate(){
@@ -103,6 +180,9 @@ class Data{
     }
 
     draw(p){
+        let x = (this.age/this.life);
+        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [vs(100)*127+vc(100)*127,vs(200)*127+vc(300)*127,vs(300)*127+vc(600)*127, 255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+       // stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])
     //    "a"+p.text(Math.round(this.age )+ " b" + Math.round(this.born) + " d"+ Math.round(this.date)+ " ", this.pos.x,this.pos.y);
     }
 }

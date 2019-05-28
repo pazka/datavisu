@@ -10,7 +10,7 @@ class DataRenc extends Data{
     pos
 
     constructor(date,life,pos){
-        super(date,life,_map.pos.x,_map.pos.y);
+        super(date,life,pos[0],pos[1]);
         this.pos = pos;
     }
 
@@ -21,9 +21,10 @@ class DataRenc extends Data{
             drawGradientTriangle(p,line,[this.pos[0],this.pos[1]],[ 0,0,0,0],[ vs()*255,vc()*255,vs()*128+vc()*127,150],10);
         })*/
 
-        drawConcentricLines(p,this.pos,50*x,10,2,30,5,500,255*easeInOut(x))
+         drawConcentricLines(p,this.pos,50*x,10,2,30,5,500,255*easeInOut(x))
        //drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
        // p.noTint();
+       super.draw(p)
     }
 }
 
@@ -52,6 +53,6 @@ class Renc extends DataType{
         });
     }
     
-    static exclude(data){
+    static exclude(pos){
     }
 }

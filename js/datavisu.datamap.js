@@ -1,10 +1,12 @@
 class DataMap {
     allPoly = [];
-    opacity = 20;
+    opacity = 21;
     mapStrokeImg;
     mapMaskImg;
 
+    mapOn = false;
     gridOn = false
+    logOn = false;
     mapPopGrid;
 
 
@@ -180,30 +182,49 @@ class DataMap {
         })
     }
 
+    toggleMap(){
+        this.mapOn = !this.mapOn
+    }
+    toggleLog(){
+        this.logOn = !this.logOn
+        document.getElementById("logs").innerHTML = "";
+    }
+
     draw = (p, opa = false) => {
         //draw map
-        p.image(this.mapStrokeImg, 0, 0);
+            p.push()
+        if(this.mapOn)
+            p.image(this.mapStrokeImg, 0, 0);
+        else{
+            p.fill([0,0,0,this.opacity])
+            p.blendMode(p.HARD_LIGHT)
+            p.rect(0,0,p.width,p.height)
+        }
+        p.pop()
 
         //
-        
-        document.getElementById("logs").innerHTML = "S : Save / C : Carroyage "
-        + "\r\n" +
-        _dataMngr.getCurrentProjectedDate().toLocaleString('fr-FR', { timeZone: 'UTC' })
+        if(this.logOn ){
+            document.getElementById("logs").innerHTML = "S : Save / C : Carroyage / L : Logs / M : map "
             + "\r\n" +
-            JSON.stringify(_dataMngr.datesBounds) +
-            "\r\n" +
-            Math.round(_dataMngr.getTimeRef()) +
-            "\r\n" +
-            "Progress : " + Math.round((_dataMngr.getTimeRef()) / (_dataMngr.datesBounds.totalTimeLength) * 100, 2) + "%" +
-            "\r\n" +
-            JSON.stringify(_bounds) +
-            "\r\n" +
-            "vs:" + Math.round(vs()) +
-            "\r\n" +
-            "vc:" + Math.round(vc())+
-            "\r\n" +
-            "flock objective:" + _flock.objective[0] + "/" +_flock.objective[1]
-            ;
+            _dataMngr.getCurrentProjectedDate().toLocaleString('fr-FR', { timeZone: 'UTC' })
+                + "\r\n" +
+                JSON.stringify(_dataMngr.datesBounds) +
+                "\r\n" +
+                Math.round(_dataMngr.getTimeRef()) +
+                "\r\n" +
+                "Progress : " + Math.round((_dataMngr.datesBounds.totalTimeLength*(_dataMngr.phase-1) + _dataMngr.getTimeRef()) / (_dataMngr.datesBounds.totalTimeLength*_dataMngr.nbPhase) * 100, 2) + "%" +
+                "\r\n" +
+                JSON.stringify(_bounds) +
+                "\r\n" +
+                "vs:" + Math.round(vs()) +
+                "\r\n" +
+                "vc:" + Math.round(vc())+
+                "\r\n" +
+                "flock objective:" + _flock.objective[0] + "/" +_flock.objective[1]+
+                "\r\n" +
+                "phase : "+_dataMngr.phase
+                ;
+        }
     }
 
     prepareMask = (p) => {

@@ -4,48 +4,14 @@ let _dataMngr;
 let _frameRate = 30;
 let _canvas;
 let _isCapturing = false;
+let _stop = false;
 //économie, envirronement, vie cit , urbanisme
 
-function loadDates() {
-    let loadProg = document.getElementById('loading-progress');
-    //set data timing
 
-    Velib.browse(import_velib_json, (velib) => {
-        _dataMngr.addData(velib);
-    })
-
-    Event.browse(import_event_json, (event) => {
-        _dataMngr.addData(event);
-    })
-
-
-    Elec.browse(import_elec_json, (elec) => {
-        _dataMngr.addData(elec);
-    })
-
-
-    Renc.browse(import_renc_json, (renc) => {
-        _dataMngr.addData(renc);
-    })
-
-
-    Cafe.browse(import_cafe_json, (cafe) => {
-        _dataMngr.addData(cafe);
-    })
-    
-    Traveler.browse(import_traveler_json, (travel) => {
-        _dataMngr.addData(travel);
-    })
-
-    //loop
-    _dataMngr.timeStart();
-    /*
-        setTimeout(()=>{
-            loadDates();
-        },_dataMngr.datesBounds.totalTimeLength);*/
-}
 let _bounds = [];
 let index = 0;
+var myBoids = []
+
 let s = function (p) {
     _p = p;
     p.setup = () => {
@@ -63,13 +29,7 @@ let s = function (p) {
         _dataMngr.updateBounds(Velib.getBounds(import_velib_json, { maxDate: 0, minDate: Infinity }))
         _dataMngr.updateBounds(Event.getBounds(import_event_json, _dataMngr.datesBounds))
         _map.setupGrid(import_carroyage_json);
-        loadDates();
-
-        // Add an initial set of boids into the system
-        for (let i = 0; i < 100; i++) {
-            let b = new Boid(_p.width / 2, _p.height / 2);
-            _flock.addBoid(b);
-        }
+        _dataMngr.loadDates();
 
         let elem = document.querySelector('#loading');
         elem.parentNode.removeChild(elem);
@@ -77,12 +37,22 @@ let s = function (p) {
             _map.draw(_p);
         }
 
+        // Add an initial set of boids into the system
+        for (let i = 0; i < 300; i++) {
+            let b = new Boid(_p.width / 2, _p.height / 2);
+            myBoids.push(b);
+        }
+
+        _dataMngr.newPhase()
+
         if (_isCapturing)
             _capturer.start();
 
     }
 
     p.draw = () => {
+        if(_stop)
+            return
         _map.draw(_p);
 
         _dataMngr.drawData();
@@ -110,6 +80,10 @@ let s = function (p) {
             _capturer.save()
         }else if (p.key == "c"){
             _map.toggleGrid()
+        }else if (p.key == "l"){
+            _map.toggleLog()
+        }else if (p.key == "m"){
+            _map.toggleMap()
         }
     }
 };
