@@ -1,17 +1,17 @@
+
+
 class DataManager{
-    allData = [];
     allDataToDisplay = [];
     _dataIndexToClean = [];
+
+    //time vars
     time_start = 0;
-
-    //phase init at 0 for init purpose
-    phase = 0;
-    nbPhase = 3;
-
+    phase_time_elapsed = 0;
+    phases = [{totalTimeLength : 1 * 1000},{totalTimeLength : 2 * 1000},{totalTimeLength : 3 * 1000}]
     datesBounds = {
         /// titme total for animation in milliseconds
         totalTimeLength : 2 * 60 * 1000,
-       // totalTimeLength : 6000,
+        totalPhasesTimeLength : this.phases.reduce((a,b) => a+b.totalTimeLength,0),
         maxDate : 0,
         minDate : Infinity,
         _typedMinDate :0,
@@ -19,20 +19,22 @@ class DataManager{
         dateSpan : 0
     }
 
-    loadDates() {
-        let loadProg = document.getElementById('loading-progress');
-        //set data timing
-        
-        if(_dataMngr.isPhase(1)){
-            _flock.boids=myBoids
+    //phase init at 0 for init purpose
+    phase = -1;
+    nbPhase = 3;
+    //phases = [{totalTimeLength : 30 * 1000},{totalTimeLength : 60 * 1000},{totalTimeLength : 2 * 60 * 1000}]
+    phasesActions = [
+        ()=>{ //phase 1
+            _map.opacity = 10
+            _flock.setup()
+
             Traveler.browse(import_traveler_json, (travel) => {
                 _dataMngr.addData(travel);
             })
-        }else{
-            _flock.boids=[]
-        }
-    
-        if(_dataMngr.isPhase(2)){
+        },
+        ()=>{ //phase 2
+            _map.opacity = 100
+            _flock.hide()
             Elec.browse(import_elec_json, (elec) => {
                 _dataMngr.addData(elec);
             })
@@ -41,9 +43,7 @@ class DataManager{
             Renc.browse(import_renc_json, (renc) => {
                 _dataMngr.addData(renc);
             })
-        }
-        
-        if(_dataMngr.isPhase(3)){
+        },()=>{//phase 3
             Velib.browse(import_velib_json, (velib) => {
                 _dataMngr.addData(velib);
             })
@@ -55,7 +55,19 @@ class DataManager{
             Cafe.browse(import_cafe_json, (cafe) => {
                 _dataMngr.addData(cafe);
             })
+        },()=>{ //phase 4 ?
+            Sound.browse(import_sound_json, (sound) => {
+                _dataMngr.addData(sound);
+            })
         }
+    ]
+
+    loadDates() {
+       // let loadProg = document.getElementById('loading-progress');
+        //set data timing
+        
+        this.datesBounds.totalTimeLength = this.phases[this.phase].totalTimeLength
+        this.phasesActions[this.phase]();
     }
 
     updateBounds(newBounds){
@@ -93,7 +105,7 @@ class DataManager{
         this._dataIndexToClean = [];
 
         //loop
-        if(this.getTimeRef() > this.datesBounds.totalTimeLength + Velib.avgLife){
+        if(this.getTimeRef() > this.datesBounds.totalTimeLength && this.allDataToDisplay.length == 0){
             this.newPhase();
         }
     }
@@ -121,13 +133,17 @@ class DataManager{
 
     newPhase(){
         //TODO faire ça propre
-        this.phase = this.phase +1;
+        this.phase_time_elapsed += this.phases[this.phase] ? this.phases[this.phase].totalTimeLength : 0;
+        this.phase++;
+
         if(this.isEnded){
-            this.phase = 1;
+            this.phase = 0;
+            this.phase_time_elapsed = 0;
 
             if(_isCapturing){
                 _capturer.save()
-                this.phase = 5
+                _capturer.capture(_canvas.canvas);
+                this.phase = this.nbPhase+1
                 _stop = true
             }
         }
@@ -135,11 +151,11 @@ class DataManager{
         this.startTime()
         this.loadDates()
 
-        return  this.phase > this.nbPhase
+        return  this.phase >= this.nbPhase
     }
 
     get isEnded(){
-        return this.phase > this.nbPhase
+        return this.phase >= this.nbPhase
     }
     isPhase(phase){
         return this.phase == phase

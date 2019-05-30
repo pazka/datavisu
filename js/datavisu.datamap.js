@@ -1,12 +1,12 @@
 class DataMap {
     allPoly = [];
-    opacity = 21;
+    opacity = 255;
     mapStrokeImg;
     mapMaskImg;
 
     mapOn = false;
     gridOn = false
-    logOn = false;
+    logOn = true;
     mapPopGrid;
 
 
@@ -212,7 +212,7 @@ class DataMap {
                 "\r\n" +
                 Math.round(_dataMngr.getTimeRef()) +
                 "\r\n" +
-                "Progress : " + Math.round((_dataMngr.datesBounds.totalTimeLength*(_dataMngr.phase-1) + _dataMngr.getTimeRef()) / (_dataMngr.datesBounds.totalTimeLength*_dataMngr.nbPhase) * 100, 2) + "%" +
+                "Progress : " + Math.round((_dataMngr.phase_time_elapsed + _dataMngr.getTimeRef()) / _dataMngr.datesBounds.totalPhasesTimeLength * 100, 2) + "%" +
                 "\r\n" +
                 JSON.stringify(_bounds) +
                 "\r\n" +

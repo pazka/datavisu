@@ -10,7 +10,6 @@ let _stop = false;
 
 let _bounds = [];
 let index = 0;
-var myBoids = []
 
 let s = function (p) {
     _p = p;
@@ -29,30 +28,19 @@ let s = function (p) {
         _dataMngr.updateBounds(Velib.getBounds(import_velib_json, { maxDate: 0, minDate: Infinity }))
         _dataMngr.updateBounds(Event.getBounds(import_event_json, _dataMngr.datesBounds))
         _map.setupGrid(import_carroyage_json);
-        _dataMngr.loadDates();
+        _dataMngr.newPhase()
 
         let elem = document.querySelector('#loading');
         elem.parentNode.removeChild(elem);
-        for (let i = 0; i < 10; i++) {
-            _map.draw(_p);
-        }
-
-        // Add an initial set of boids into the system
-        for (let i = 0; i < 300; i++) {
-            let b = new Boid(_p.width / 2, _p.height / 2);
-            myBoids.push(b);
-        }
-
-        _dataMngr.newPhase()
 
         if (_isCapturing)
             _capturer.start();
-
     }
 
     p.draw = () => {
         if(_stop)
             return
+            
         _map.draw(_p);
 
         _dataMngr.drawData();
@@ -87,5 +75,6 @@ let s = function (p) {
         }
     }
 };
+
 
 let myp5 = new p5(s);
