@@ -38,7 +38,7 @@ class Velib extends DataType{
             if(Velib.exclude(data))
                 return;
 
-            let tmp_d =  (new Date(data.fields.duedate)).getTime() ;
+            let tmp_d =  data.fields.duedate ;
 
 
             if(tmp_d < dateBounds.minDate){
@@ -62,7 +62,7 @@ class Velib extends DataType{
             if(Velib.exclude(pos_tmp))
                 return;
 
-            let tmp_d = _dataMngr.getRelTime((new Date(data.fields.duedate)).getTime());
+            let tmp_d = _dataMngr.getRelTime(data.fields.duedate);
             fn(
                 new DataVelib(tmp_d,
                     Velib.avgLife,

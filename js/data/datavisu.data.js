@@ -1,4 +1,6 @@
 
+let _filterNumber = 6
+let _nb = 0
 
 class DataManager{
     allDataToDisplay = [];
@@ -7,7 +9,8 @@ class DataManager{
     //time vars
     time_start = 0;
     phase_time_elapsed = 0;
-    phases = [{totalTimeLength : 1 * 1000},{totalTimeLength : 2 * 1000},{totalTimeLength : 3 * 1000}]
+    phases = [{totalTimeLength : 0.5 * 60 * 1000},{totalTimeLength : 1 * 60 * 1000},{totalTimeLength : 2.5 * 60 * 1000}]
+    //phases = [{totalTimeLength : 0.5 * 1000},{totalTimeLength : 0.5 * 1000},{totalTimeLength : 1 * 0.5 * 1000}]
     datesBounds = {
         /// titme total for animation in milliseconds
         totalTimeLength : 2 * 60 * 1000,
@@ -22,7 +25,6 @@ class DataManager{
     //phase init at 0 for init purpose
     phase = -1;
     nbPhase = 3;
-    //phases = [{totalTimeLength : 30 * 1000},{totalTimeLength : 60 * 1000},{totalTimeLength : 2 * 60 * 1000}]
     phasesActions = [
         ()=>{ //phase 1
             _map.opacity = 10
@@ -52,9 +54,9 @@ class DataManager{
                 _dataMngr.addData(event);
             })
     
-            Cafe.browse(import_cafe_json, (cafe) => {
+          /*  Cafe.browse(import_cafe_json, (cafe) => {
                 _dataMngr.addData(cafe);
-            })
+            })*/
         },()=>{ //phase 4 ?
             Sound.browse(import_sound_json, (sound) => {
                 _dataMngr.addData(sound);
@@ -65,7 +67,6 @@ class DataManager{
     loadDates() {
        // let loadProg = document.getElementById('loading-progress');
         //set data timing
-        
         this.datesBounds.totalTimeLength = this.phases[this.phase].totalTimeLength
         this.phasesActions[this.phase]();
     }
@@ -141,12 +142,15 @@ class DataManager{
             this.phase_time_elapsed = 0;
 
             if(_isCapturing){
+                _capturer.stop()
                 _capturer.save()
-                _capturer.capture(_canvas.canvas);
                 this.phase = this.nbPhase+1
                 _stop = true
             }
         }
+
+        if(_stop)
+            return
 
         this.startTime()
         this.loadDates()
@@ -195,7 +199,8 @@ class Data{
         return _dataMngr.getTimeRef() - this.born;
     }
 
-    draw(p){
+    draw(p){       
+        
         let x = (this.age/this.life);
         drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [vs(100)*127+vc(100)*127,vs(200)*127+vc(300)*127,vs(300)*127+vc(600)*127, 255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
        // stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])

@@ -24,7 +24,7 @@ class DataRenc extends Data{
          drawConcentricLines(p,this.pos,50*x,10,2,30,5,500,255*easeInOut(x))
        //drawTarget(p,this.pos[0], this.pos[1], vs()*50, 10, [vc()*100,200+vc()*55,255], opacityFn(x));  //p.text((this.age/this.life)*100,this.pos[0], this.pos[1])
        // p.noTint();
-       super.draw(p)
+       //super.draw(p)
     }
 }
 
@@ -37,12 +37,18 @@ class Renc extends DataType{
     static browse(json,fn){
         let indexToCall = 0;
         _allRencLength = 0;
+        _filterNumber = 7;
 
         json.forEach(() =>{
+            if(Renc.exclude())
+                return;
+
             _allRencLength++;
         })
         
         json.forEach(data =>{
+            if(Renc.exclude())
+                return;
             //orchestrate data
             fn(
                 new DataRenc((_dataMngr.datesBounds.totalTimeLength / _allRencLength)*indexToCall,
@@ -53,6 +59,8 @@ class Renc extends DataType{
         });
     }
     
-    static exclude(pos){
+    static exclude(){
+        _nb = (_nb+ 1) % _filterNumber
+        return _nb != 0
     }
 }

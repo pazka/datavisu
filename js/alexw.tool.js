@@ -129,8 +129,8 @@ function drawStar(p, x, y, radius1, radius2, npoints,color) {
     let halfAngle = angle / 2.0;
     p.beginShape();
     for (let a = 0; a < p.TWO_PI; a += angle) {
-      let sx = x + p.cos(a) * radius2;
-      let sy = y + p.sin(a) * radius2;
+      let sx = x + _p.cos(a) * radius2;
+      let sy = y + _p.sin(a) * radius2;
       p.vertex(sx, sy);
       sx = x + p.cos(a + halfAngle) * radius1;
       sy = y + p.sin(a + halfAngle) * radius1;

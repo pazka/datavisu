@@ -11,6 +11,7 @@ let _stop = false;
 let _bounds = [];
 let index = 0;
 
+
 let s = function (p) {
     _p = p;
     p.setup = () => {
@@ -20,6 +21,16 @@ let s = function (p) {
         p.frameRate(_frameRate);
         p.background('#000000');
         p.fill('#000000');
+
+        //preventing Date shit
+        import_velib_json.forEach(data =>{
+            data.fields.duedate =  (new Date(data.fields.duedate)).getTime() ;
+        });
+
+        import_event_json.forEach(data =>{
+            data.properties.date_start = (new Date(data.properties.date_start)).getTime();
+            data.properties.date_end = (new Date(data.properties.date_end)).getTime();
+        });
 
         _map = new DataMap(p.width * 0.7, p.height * 0.7, p.width * 0.17, p.height * 0.15);
         _map.setup(import_pdz_json);
@@ -32,6 +43,8 @@ let s = function (p) {
 
         let elem = document.querySelector('#loading');
         elem.parentNode.removeChild(elem);
+
+
 
         if (_isCapturing)
             _capturer.start();

@@ -25,8 +25,8 @@ class Event extends DataType{
             if(Event.exclude(data))
                 return;
 
-            let tmp_d_s = (new Date(data.properties.date_start)).getTime();
-            let tmp_d_e = (new Date(data.properties.date_end)).getTime();
+            let tmp_d_s = data.properties.date_start
+            let tmp_d_e = data.properties.date_end
     
             if(tmp_d_s < dateBounds.minDate){
                 dateBounds.minDate = tmp_d_s;
@@ -50,8 +50,8 @@ class Event extends DataType{
                 _map.getY(data.geometry.coordinates[1])
             ]
 
-            let tmp_d_s = _dataMngr.getRelTime((new Date(data.properties.date_start)).getTime());
-            let tmp_d_e = _dataMngr.getRelTime((new Date(data.properties.date_end)).getTime());
+            let tmp_d_s = _dataMngr.getRelTime(data.properties.date_start);
+            let tmp_d_e = _dataMngr.getRelTime(data.properties.date_end);
             
             fn(
                 new DataEvent(tmp_d_s,
@@ -64,9 +64,9 @@ class Event extends DataType{
     }
     
     static exclude(data){
-        //return ( data.geometry == null || (new Date(data.properties.date_start)).getTime() <= 1415019600000 ) //< 2017
+        //return ( data.geometry == null || data.properties.date_start <= 1415019600000 ) //< 2017
         return   data.geometry == null 
-        || (new Date(data.properties.date_start)).getTime() <= 1512000000000 
+        || data.properties.date_start <= 1512000000000 
         || !isInsidePoly([_map.getX(data.geometry.coordinates[0]),_map.getY(data.geometry.coordinates[1])],_map.screenBounds.points )   //< 2018
     }
 }

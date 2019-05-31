@@ -7,6 +7,8 @@ class DataTraveler extends Data{
     }
 
     draw(p){
+      /*  p.fill([255,0,0])
+        p.ellipse(this.pos[0], this.pos[1],5,5)*/
         _flock.objective = this.pos
     }
 }
@@ -19,6 +21,7 @@ class Traveler extends DataType{
     static browse(json,fn){
         let indexToCall = 0;
         let _allTravelerLength = 0;
+        _filterNumber = 10;
 
         json.forEach(data =>{
             if(Traveler.exclude([_map.getX(data.geometry.coordinates[0]),_map.getY(data.geometry.coordinates[1])]))
@@ -40,5 +43,10 @@ class Traveler extends DataType{
                 );
                 indexToCall++
         });
+    }
+
+    static exclude(pos){
+        _nb = (_nb+ 1) % _filterNumber
+        return super.exclude(pos) || _nb != 0
     }
 }
