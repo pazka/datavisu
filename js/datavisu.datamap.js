@@ -108,6 +108,7 @@ class DataMap {
                         this.allPoly.push(allPolyCoords);
                     });
                 } else {
+                    
                     allPolyCoords = [];
                     _e.forEach(coords => {
                         allPolyCoords.push([this.getX(coords[0]), this.getY(coords[1])]);

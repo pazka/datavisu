@@ -1,21 +1,24 @@
 
 
 //https://opendata.paris.fr/explore/dataset/velib-disponibilite-en-temps-reel/information/
+var  _storm = new Storm();
+
 class DataSound extends Data{
-    constructor(date,val){
-        super(date,1000,_p.width/2,_p.height/2);
+    constructor(date){
+        super(date,10000,_p.width/2,_p.height/2);
     }
 
     draw(p){
         let x = (this.age/this.life);
-        super.draw(p);
+        //super.draw(p);
+        _storm.draw(p)
     }
 }
 
 class Sound extends DataType{
     type = "Sound";
 
-    static getBounds(json,dateBounds){
+    static getBounds(json,dateBounds){/*
         json.forEach(data =>{
             if(Sound.exclude(data))
                 return;
@@ -31,19 +34,20 @@ class Sound extends DataType{
             }
         });
 
-        return dateBounds;
+        return dateBounds;*/
     }
 
     static browse(json,fn){
-        json.forEach(data =>{
+       // json.forEach(data =>{
 
-            if(Sound.exclude(pos_tmp))
-                return;
+          //  if(Sound.exclude())
+            //    return;
 
-            let tmp_d = _dataMngr.getRelTime((new Date(data.timestamp)).getTime());
+           // let tmp_d = _dataMngr.getRelTime((new Date(data.timestamp)).getTime());
+            let tmp_d = _dataMngr.getTimeRef();
             fn(
-                new DataSound(tmp_d,data.value)
+                new DataSound(tmp_d)
             );
-        });
+       // });
     }
 }

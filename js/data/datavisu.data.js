@@ -24,9 +24,9 @@ class DataManager{
 
     //phase init at 0 for init purpose
     phase = -1;
-    nbPhase = 3;
+    nbPhase = 1;
     phasesActions = [
-        ()=>{ //phase 1
+        /*()=>{ //phase 1
             _map.opacity = 10
             _flock.setup()
 
@@ -45,7 +45,7 @@ class DataManager{
             Renc.browse(import_renc_json, (renc) => {
                 _dataMngr.addData(renc);
             })
-        },()=>{//phase 3
+        },*/()=>{//phase 3
             Velib.browse(import_velib_json, (velib) => {
                 _dataMngr.addData(velib);
             })
@@ -54,14 +54,14 @@ class DataManager{
                 _dataMngr.addData(event);
             })
     
-          /*  Cafe.browse(import_cafe_json, (cafe) => {
+            Cafe.browse(import_cafe_json, (cafe) => {
                 _dataMngr.addData(cafe);
-            })*/
-        },()=>{ //phase 4 ?
-            Sound.browse(import_sound_json, (sound) => {
-                _dataMngr.addData(sound);
             })
-        }
+        }/*,()=>{ //phase 4 ?
+            Sound.browse(import_sound_json, (storm) => {
+                _dataMngr.addData(storm);
+            })
+        }*/
     ]
 
     loadDates() {

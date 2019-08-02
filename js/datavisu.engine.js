@@ -5,7 +5,8 @@ let _frameRate = 30;
 let _canvas;
 let _isCapturing = false;
 let _stop = false;
-//économie, envirronement, vie cit , urbanisme
+_shaderMngr;
+//économie, environnement, vie cit , urbanisme
 
 
 let _bounds = [];
@@ -14,8 +15,13 @@ let index = 0;
 
 let s = function (p) {
     _p = p;
+    p.preload =()=>{
+        _shaderMngr =  new ShaderManager()
+        _shaderMngr.loadShaders(p);
+    }
+
     p.setup = () => {
-        _canvas = p.createCanvas(window.innerWidth, window.innerHeight);
+        _canvas = p.createCanvas(1920,1080);
         _canvas.parent("#p5-container");
         p.noStroke();
         p.frameRate(_frameRate);
@@ -32,7 +38,7 @@ let s = function (p) {
             data.properties.date_end = (new Date(data.properties.date_end)).getTime();
         });
 
-        _map = new DataMap(p.width * 0.7, p.height * 0.7, p.width * 0.17, p.height * 0.15);
+        _map = new DataMap(p.width * 0.9, p.height * 0.9, p.width * 0.10, p.height * 0.10);
         _map.setup(import_pdz_json);
         _map.prepareMask(_p);
         _dataMngr = new DataManager();
@@ -43,8 +49,6 @@ let s = function (p) {
 
         let elem = document.querySelector('#loading');
         elem.parentNode.removeChild(elem);
-
-
 
         if (_isCapturing)
             _capturer.start();
