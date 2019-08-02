@@ -41,7 +41,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Normalized pixel coordinates (from -1 to 1)
     vec2 uv = (2.*fragCoord-iResolution.xy)/iResolution.y;
-    vec2 mouse = 1.+(2.*iMouse.xy-iResolution.xy)/iResolution.y;
+    vec2 mouse = vec2(0.25,0.25);
 
     uv *=1.+.2*length(uv);
     float uvlen = 1.-length(uv);
@@ -64,7 +64,6 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     	col += (1.5-i)*vec3(nv,nv*nv*(3.-2.*nv), nv*nv);
     }
     col /=5.;
-
     
     fragColor = vec4(col,1.0);
 }

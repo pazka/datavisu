@@ -5,43 +5,43 @@ let _frameRate = 30;
 let _canvas;
 let _isCapturing = false;
 let _stop = false;
-_shaderMngr;
+let _shaderMngr;
 //économie, environnement, vie cit , urbanisme
-
 
 let _bounds = [];
 let index = 0;
 
 
 let s = function (p) {
-    _p = p;
+    _p = p
+
     p.preload =()=>{
-        _shaderMngr =  new ShaderManager()
-        _shaderMngr.loadShaders(p);
+        _shaderMngr =  new ShaderManager(p)
+        _shaderMngr.loadShaders()
     }
 
     p.setup = () => {
-        _canvas = p.createCanvas(1920,1080);
-        _canvas.parent("#p5-container");
-        p.noStroke();
-        p.frameRate(_frameRate);
-        p.background('#000000');
-        p.fill('#000000');
+        _canvas = p.createCanvas(window.innerWidth,window.innerHeight,p.WEBGL)
+        _canvas.parent("#p5-container")
+        p.noStroke()
+        p.frameRate(_frameRate)
+        p.background('#000000')
+        p.fill('#000000')
 
         //preventing Date shit
         import_velib_json.forEach(data =>{
-            data.fields.duedate =  (new Date(data.fields.duedate)).getTime() ;
+            data.fields.duedate =  (new Date(data.fields.duedate)).getTime() 
         });
 
         import_event_json.forEach(data =>{
-            data.properties.date_start = (new Date(data.properties.date_start)).getTime();
-            data.properties.date_end = (new Date(data.properties.date_end)).getTime();
+            data.properties.date_start = (new Date(data.properties.date_start)).getTime()
+            data.properties.date_end = (new Date(data.properties.date_end)).getTime()
         });
 
         _map = new DataMap(p.width * 0.9, p.height * 0.9, p.width * 0.10, p.height * 0.10);
-        _map.setup(import_pdz_json);
-        _map.prepareMask(_p);
-        _dataMngr = new DataManager();
+        _map.setup(import_pdz_json)
+        _map.prepareMask(_p)
+        _dataMngr = new DataManager()
         _dataMngr.updateBounds(Velib.getBounds(import_velib_json, { maxDate: 0, minDate: Infinity }))
         _dataMngr.updateBounds(Event.getBounds(import_event_json, _dataMngr.datesBounds))
         _map.setupGrid(import_carroyage_json);

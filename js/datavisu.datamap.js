@@ -193,11 +193,14 @@ class DataMap {
 
     draw = (p, opa = false) => {
         //draw map
-            p.push()
+        p.push()
+
         if(this.mapOn)
             p.image(this.mapStrokeImg, 0, 0);
         else{
-            p.fill([0,0,0,this.opacity])
+            p.fill([80,80,80,this.opacity])   
+            p.shader(_shaderMngr.shaders.storm)
+    
             p.blendMode(p.HARD_LIGHT)
             p.rect(0,0,p.width,p.height)
         }
