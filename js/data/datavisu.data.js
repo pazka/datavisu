@@ -68,7 +68,7 @@ class DataManager{
        // let loadProg = document.getElementById('loading-progress');
         //set data timing
         this.datesBounds.totalTimeLength = this.phases[this.phase].totalTimeLength
-        this.phasesActions[this.phase]();
+        if(this.phasesActions[this.phase] != undefined ) this.phasesActions[this.phase]();
     }
 
     updateBounds(newBounds){
@@ -90,7 +90,9 @@ class DataManager{
         let i = 0;
         this.allDataToDisplay.forEach(data => {
             if(data.age > 0){
-                data.draw(_p);
+                _p.push()
+                data.draw(_p)
+                _p.pop()
 
                 if(data.hasLived)
                     this._dataIndexToClean.push(i);
@@ -125,6 +127,7 @@ class DataManager{
 
     getTimeRef(){
        // return _p.millis();
+       // * 1000 cause We want it in milliseconds
        return ( _p.frameCount / _frameRate * 1000 ) - this.time_start;
     }
 
@@ -202,7 +205,11 @@ class Data{
     draw(p){       
         
         let x = (this.age/this.life);
-        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [vs(100)*127+vc(100)*127,vs(200)*127+vc(300)*127,vs(300)*127+vc(600)*127, 255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [
+            vs(100)*127+vc(100)*127,
+            vs(200)*127+vc(300)*127,
+            vs(300)*127+vc(600)*127, 
+            255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
        // stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])
     //    "a"+p.text(Math.round(this.age )+ " b" + Math.round(this.born) + " d"+ Math.round(this.date)+ " ", this.pos.x,this.pos.y);
     }

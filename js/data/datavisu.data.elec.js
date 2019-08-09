@@ -24,26 +24,9 @@ class DataElec extends Data{
         this.circleCurSpeed = 0;
 
      //   this.backColor = _p.createImage(_map.dimension.width,_map.dimension.height);
-     //   this.shader.set("u_resolution", _p.width * 1.0, _p.heigh * 1.0 );
     }
 
     draw(p){
-      /*  this.shader.set("u_time", millis() / 1000.0);
-        
-        p.shader(this.shader);
-        p.rect(0,0,p.width,p.height);
-
-        this.backColor.loadPixels();
-        let pix = this.backColor.pixels;
-       /* for (let i = 0; i < pix.length; i += 4) {
-            pix[i] = p.abs(p.cos(i*p.millis()))*50;
-            pix[i+1] =  p.abs(p.sin(i*p.millis()))*100;
-            pix[i+2] =  200+p.abs(p.sin(i*p.millis()))*55;
-        }
-        this.backColor.pixels = pix;
-        
-        this.backColor.mask(this.dataMask); 
-        */   
 
 
         //p.image(this.dataMask,0,0);

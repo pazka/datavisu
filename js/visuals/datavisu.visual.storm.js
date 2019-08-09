@@ -15,7 +15,7 @@ class Storm{
   y_off
   x_off
 
-  draw(p) {/*
+  draw(p) {
     this.x_off = 0;
     this.y_off = 0;
 
@@ -36,6 +36,6 @@ class Storm{
       }
     }
 
-    this.z_off += this.z_increment;*/
+    this.z_off += this.z_increment;
   }
 }

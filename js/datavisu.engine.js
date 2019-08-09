@@ -12,16 +12,15 @@ let _bounds = [];
 let index = 0;
 
 
-let s = function (p) {
-    _p = p
 
+_p = new p5((p) => {
     p.preload =()=>{
         _shaderMngr =  new ShaderManager(p)
         _shaderMngr.loadShaders()
     }
 
     p.setup = () => {
-        _canvas = p.createCanvas(window.innerWidth,window.innerHeight,p.WEBGL)
+        _canvas = p.createCanvas(window.outerWidth,window.outerHeight,p.WEBGL)
         _canvas.parent("#p5-container")
         p.noStroke()
         p.frameRate(_frameRate)
@@ -38,7 +37,7 @@ let s = function (p) {
             data.properties.date_end = (new Date(data.properties.date_end)).getTime()
         });
 
-        _map = new DataMap(p.width * 0.9, p.height * 0.9, p.width * 0.10, p.height * 0.10);
+        _map = new DataMap(p.width , p.height ,0, 0);
         _map.setup(import_pdz_json)
         _map.prepareMask(_p)
         _dataMngr = new DataManager()
@@ -57,7 +56,8 @@ let s = function (p) {
     p.draw = () => {
         if(_stop)
             return
-            
+        p.translate(-p.width/2,-p.height/2,0);
+
         _map.draw(_p);
 
         _dataMngr.drawData();
@@ -89,9 +89,8 @@ let s = function (p) {
             _map.toggleLog()
         }else if (p.key == "m"){
             _map.toggleMap()
+        }else if (p.key == "p"){
+            _stop = !_stop
         }
     }
-};
-
-
-let myp5 = new p5(s);
+});
