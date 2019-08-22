@@ -203,20 +203,21 @@ class DataMap {
 		    _shaderMngr.shaders.storm.run()
 	
 			//p.blendMode(p.HARD_LIGHT)
-            p.rect(0,0,p.width,p.height)
+			p.quad(0,0,p.width,0,p.width,p.height,0,p.height)
+			_shaderMngr.resetShader();
 		}
 		p.pop()
 
 		//
 		if(this.logOn ){
-			document.getElementById("logs").innerHTML = "S : Save / C : Carroyage / L : Logs / M : map "
+			document.getElementById("logs").innerHTML = "S : Save / C : Carroyage / L : Logs / M : map / P : pause"
 			+ "\r\n" +
 			_dataMngr.getCurrentProjectedDate().toLocaleString('fr-FR', { timeZone: 'UTC' })
             + "\r\n" +
             _dataMngr.getTimeRef()
             + "\r\n" +
-            JSON.stringify(_dataMngr.datesBounds) +
-            "\r\n" +
+            // JSON.stringify(_dataMngr.datesBounds) +
+            // "\r\n" +
             Math.round(_dataMngr.getTimeRef()) +
             "\r\n" +
             "Progress : " + Math.round((_dataMngr.phase_time_elapsed + _dataMngr.getTimeRef()) / _dataMngr.datesBounds.totalPhasesTimeLength * 100, 2) + "%" +

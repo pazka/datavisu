@@ -56,12 +56,16 @@ _p = new p5((p) => {
     p.draw = () => {
         if(_stop)
             return
+
+        if(_dataMngr.getTimeRef() == 500){
+            _stop = true;
+        }
+
         p.translate(-p.width/2,-p.height/2,0);
 
         _map.draw(_p);
 
         _dataMngr.drawData();
-        _flock.run();
 
         _map.drawMask(_p);
 

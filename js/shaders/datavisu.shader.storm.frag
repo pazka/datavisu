@@ -1,12 +1,16 @@
+precision mediump float;
+
 #ifndef iTime 
+uniform float iTime;
+#else
 #define iTime 124578.0
 #endif
+
 
 #ifndef iResolution
 #define iResolution vec2(1920,1080)
 #endif
 
-precision mediump float;
 
 float noise(vec3 p)
 {
@@ -43,7 +47,7 @@ float turb(vec3 p)
 		div +=inc;
 	}
 	float v = n/div;
-	v *= 1.-max(0.,1.2-length(vec3(.5,0.,6.)-p));
+	v *= 1.-max(0.,3.8-length(vec3(.5,0.,6.)-p));
 	return v;
 }
 
@@ -51,7 +55,7 @@ void main( )
 {
 	// Normalized pixel coordinates (from -1 to 1)
 	vec2 uv = (2.*gl_FragCoord.xy - iResolution.xy)/iResolution.y;
-	vec2 mouse = vec2(0.25,0.25);
+	vec2 mouse = vec2(0.5,0.5);
 
 	uv *=1.+.2*length(uv);
 	float uvlen = 1.-length(uv);
@@ -72,6 +76,8 @@ void main( )
 		col += (1.5-i)*vec3(nv,nv*nv*(3.-2.*nv), nv*nv);
 	}
 	col /=5.;
+	//bluerisation
+	col *= vec3(0.1,0.2,2);
 	
-	gl_FragColor = vec4(col,1.0);
+	gl_FragColor = vec4(col,1.);
 }

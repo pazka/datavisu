@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "name": "Launch index.html",
+            "type": "chrome",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\js\\visuals\\datavisu.visual.shaders.js"
-        }
+            "file": "${workspaceFolder}/index.html"
+        },
     ]
 }

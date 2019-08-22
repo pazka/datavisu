@@ -48,7 +48,7 @@ class DataManager{
         },*/()=>{//phase 3
             Velib.browse(import_velib_json, (velib) => {
                 _dataMngr.addData(velib);
-            })
+            })}/*
     
             Event.browse(import_event_json, (event) => {
                 _dataMngr.addData(event);
@@ -57,7 +57,7 @@ class DataManager{
             Cafe.browse(import_cafe_json, (cafe) => {
                 _dataMngr.addData(cafe);
             })
-        }/*,()=>{ //phase 4 ?
+        },()=>{ //phase 4 ?
             Sound.browse(import_sound_json, (storm) => {
                 _dataMngr.addData(storm);
             })
@@ -205,11 +205,16 @@ class Data{
     draw(p){       
         
         let x = (this.age/this.life);
-        drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [
+        drawStar(p,this.pos.x, this.pos.y, 1,10,this.noise, [
             vs(100)*127+vc(100)*127,
             vs(200)*127+vc(300)*127,
             vs(300)*127+vc(600)*127, 
-            255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
+            255*easeInOut(x)]);
+        // drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [
+        //     vs(100)*127+vc(100)*127,
+        //     vs(200)*127+vc(300)*127,
+        //     vs(300)*127+vc(600)*127, 
+        //     255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
        // stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])
     //    "a"+p.text(Math.round(this.age )+ " b" + Math.round(this.born) + " d"+ Math.round(this.date)+ " ", this.pos.x,this.pos.y);
     }
