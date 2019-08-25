@@ -15,12 +15,12 @@ let index = 0;
 
 _p = new p5((p) => {
     p.preload =()=>{
-        _shaderMngr =  new ShaderManager(p)
+        _shaderMngr =  new ShaderManager(p,window.outerWidth,window.outerHeight)
         _shaderMngr.loadShaders()
     }
 
     p.setup = () => {
-        _canvas = p.createCanvas(window.outerWidth,window.outerHeight,p.WEBGL)
+        _canvas = p.createCanvas(window.outerWidth,window.outerHeight)
         _canvas.parent("#p5-container")
         p.noStroke()
         p.frameRate(_frameRate)
@@ -61,7 +61,8 @@ _p = new p5((p) => {
             _stop = true;
         }
 
-        p.translate(-p.width/2,-p.height/2,0);
+        //only in webgl
+        // p.translate(-p.width/2,-p.height/2,0);
 
         _map.draw(_p);
 

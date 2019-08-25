@@ -195,16 +195,16 @@ class DataMap {
 		//draw map
 		p.push()
 
-		if(this.mapOn)
+		_shaderMngr.shaders.storm.run()
+        _shaderMngr.drawBuffer()
+		p.blendMode(p.HARD_LIGHT)
+
+		if(this.mapOn){
 			p.image(this.mapStrokeImg, 0, 0);
+		}
 		else{
 			p.fill([0,0,0,this.opacity])   
             p.stroke([255,0,0])
-		    _shaderMngr.shaders.storm.run()
-	
-			//p.blendMode(p.HARD_LIGHT)
-			p.quad(0,0,p.width,0,p.width,p.height,0,p.height)
-			_shaderMngr.resetShader();
 		}
 		p.pop()
 

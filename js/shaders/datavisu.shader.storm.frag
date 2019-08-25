@@ -3,12 +3,13 @@ precision mediump float;
 #ifndef iTime 
 uniform float iTime;
 #else
-#define iTime 124578.0
 #endif
 
 
 #ifndef iResolution
-#define iResolution vec2(1920,1080)
+uniform vec2 iResolution;
+#else
+#define iResolution vec2(300,300)
 #endif
 
 
@@ -54,8 +55,8 @@ float turb(vec3 p)
 void main( )
 {
 	// Normalized pixel coordinates (from -1 to 1)
-	vec2 uv = (2.*gl_FragCoord.xy - iResolution.xy)/iResolution.y;
-	vec2 mouse = vec2(0.5,0.5);
+	vec2 uv = (1.*gl_FragCoord.xy - iResolution.xy)/iResolution.y;
+	vec2 mouse = vec2(.5,.5);
 
 	uv *=1.+.2*length(uv);
 	float uvlen = 1.-length(uv);
