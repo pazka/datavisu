@@ -1,9 +1,10 @@
 //https://opendata.paris.fr/explore/dataset/que-faire-a-paris-/table/?disjunctive.category&disjunctive.tags&disjunctive.address_zipcode&disjunctive.address_city&disjunctive.access_type&disjunctive.price_type
 class DataCafe extends Data{
     pos
+    type = "Cafe"
 
-    constructor(date,life,pos){
-        super(date,life,_map.pos.x,_map.pos.y);
+    constructor(rawData,date,life,pos){
+        super(rawData,date,life,_map.pos.x,_map.pos.y);
         this.pos = pos;
     }
 
@@ -40,7 +41,9 @@ class Cafe extends DataType{
             //orchestrate data
             if(!Cafe.exclude(data)){
                 fn(
-                    new DataCafe((_dataMngr.datesBounds.totalTimeLength / _allCafeLength)*indexToCall,
+                    new DataCafe(
+                        data,
+                        (_dataMngr.datesBounds.totalTimeLength / _allCafeLength)*indexToCall,
                         (_dataMngr.datesBounds.totalTimeLength / _allCafeLength),
                         [_map.getX(data.geometry.coordinates[0]),_map.getY(data.geometry.coordinates[1])])
                 );
@@ -50,6 +53,6 @@ class Cafe extends DataType{
     }
     
     static exclude(data){
-        return data.geometry == null
+        return data.geometry == null || data.properties.date_end >= 1570393800000
     }
 }

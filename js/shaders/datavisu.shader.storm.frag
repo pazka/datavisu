@@ -1,16 +1,8 @@
 precision mediump float;
 
-#ifndef iTime 
 uniform float iTime;
-#else
-#endif
-
-
-#ifndef iResolution
 uniform vec2 iResolution;
-#else
-#define iResolution vec2(300,300)
-#endif
+uniform vec2 iMouse;
 
 
 float noise(vec3 p)
@@ -52,18 +44,24 @@ float turb(vec3 p)
 	return v;
 }
 
+
+uniform float iPos;
 void main( )
 {
 	// Normalized pixel coordinates (from -1 to 1)
-	vec2 uv = (1.*gl_FragCoord.xy - iResolution.xy)/iResolution.y;
-	vec2 mouse = vec2(.5,.5);
+	vec2 newRes = iResolution;
+	newRes.x += newRes.x * 4.;
+	newRes.y += newRes.y + 600.;
+	newRes *= .1;
+	vec2 uv = (1.*gl_FragCoord.xy - newRes.xy)/newRes.y;
+	vec2 mouse = vec2(.4,.4); 
 
 	uv *=1.+.2*length(uv);
 	float uvlen = 1.-length(uv);
 	float tt = .5*iTime+(0.3-.3*uvlen*uvlen);
 	vec2 rot = vec2(sin(tt),cos(tt));
 	uv = vec2(uv.x*rot.x+uv.y*rot.y, uv.x*rot.y-uv.y*rot.x);
-	mouse = vec2(0.5,0.5);
+//	mouse = vec2(0.5,0.5);
 	vec3 ro = vec3(mouse,-1.);
 	vec3 rd = normalize(vec3(uv,5.)-ro);
 	

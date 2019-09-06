@@ -57,13 +57,13 @@ _p = new p5((p) => {
         if(_stop)
             return
 
-        if(_dataMngr.getTimeRef() == 500){
-            _stop = true;
-        }
+        // if(_dataMngr.getTimeRef() == 500){
+        //     _stop = true;
+        // }
 
         //only in webgl
-        // p.translate(-p.width/2,-p.height/2,0);
-
+        //p.scale(_map.zoom)
+        //p.translate(-p.width*((_map.zoom - 1)/2),-p.height*((_map.zoom-1)/2));
         _map.draw(_p);
 
         _dataMngr.drawData();

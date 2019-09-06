@@ -9,12 +9,10 @@ class DataManager{
     //time vars
     time_start = 0;
     phase_time_elapsed = 0;
-    phases = [{totalTimeLength : 0.5 * 60 * 1000},{totalTimeLength : 1 * 60 * 1000},{totalTimeLength : 2.5 * 60 * 1000}]
     //phases = [{totalTimeLength : 0.5 * 1000},{totalTimeLength : 0.5 * 1000},{totalTimeLength : 1 * 0.5 * 1000}]
     datesBounds = {
         /// titme total for animation in milliseconds
         totalTimeLength : 2 * 60 * 1000,
-        totalPhasesTimeLength : this.phases.reduce((a,b) => a+b.totalTimeLength,0),
         maxDate : 0,
         minDate : Infinity,
         _typedMinDate :0,
@@ -23,9 +21,8 @@ class DataManager{
     }
 
     //phase init at 0 for init purpose
-    phase = -1;
-    nbPhase = 1;
-    phasesActions = [
+    phase = 0;
+    phases = [
         /*()=>{ //phase 1
             _map.opacity = 10
             _flock.setup()
@@ -45,30 +42,36 @@ class DataManager{
             Renc.browse(import_renc_json, (renc) => {
                 _dataMngr.addData(renc);
             })
-        },*/()=>{//phase 3
-            Velib.browse(import_velib_json, (velib) => {
-                _dataMngr.addData(velib);
-            })}/*
-    
-            Event.browse(import_event_json, (event) => {
-                _dataMngr.addData(event);
-            })
-    
-            Cafe.browse(import_cafe_json, (cafe) => {
-                _dataMngr.addData(cafe);
-            })
-        },()=>{ //phase 4 ?
-            Sound.browse(import_sound_json, (storm) => {
-                _dataMngr.addData(storm);
-            })
-        }*/
+        },*/{
+            totalTimeLength : 2 * 60 * 1000,
+            action : ()=>{//phase 3
+                Velib.browse(import_velib_json, (velib) => {
+                    _dataMngr.addData(velib);
+                })
+        
+                Event.browse(import_event_json, (event) => {
+                    _dataMngr.addData(event);
+                })
+        
+                Cafe.browse(import_cafe_json, (cafe) => {
+                    _dataMngr.addData(cafe);
+                })
+            }
+        },{
+            totalTimeLength : 2 * 60 * 1000,
+            action: ()=>{ 
+                Sound.browse(import_sound_json, (storm) => {
+                    _dataMngr.addData(storm);
+                })
+            }
+        }
     ]
 
     loadDates() {
        // let loadProg = document.getElementById('loading-progress');
         //set data timing
         this.datesBounds.totalTimeLength = this.phases[this.phase].totalTimeLength
-        if(this.phasesActions[this.phase] != undefined ) this.phasesActions[this.phase]();
+        if(this.phases[this.phase] != undefined ) this.phases[this.phase].action();
     }
 
     updateBounds(newBounds){
@@ -108,7 +111,7 @@ class DataManager{
         this._dataIndexToClean = [];
 
         //loop
-        if(this.getTimeRef() > this.datesBounds.totalTimeLength && this.allDataToDisplay.length == 0){
+        if(this.getTimeRef() > this.datesBounds.totalTimeLength || this.allDataToDisplay.length == 0){
             this.newPhase();
         }
     }
@@ -136,7 +139,9 @@ class DataManager{
     }
 
     newPhase(){
+        this.allDataToDisplay = [];
         //TODO faire ça propre
+        this.datesBounds.totalTimeLength = this.phases[this.phase].totalTimeLength;
         this.phase_time_elapsed += this.phases[this.phase] ? this.phases[this.phase].totalTimeLength : 0;
         this.phase++;
 
@@ -147,7 +152,7 @@ class DataManager{
             if(_isCapturing){
                 _capturer.stop()
                 _capturer.save()
-                this.phase = this.nbPhase+1
+                this.phase = this.phases.length+1
                 _stop = true
             }
         }
@@ -158,11 +163,11 @@ class DataManager{
         this.startTime()
         this.loadDates()
 
-        return  this.phase >= this.nbPhase
+        return  this.phase >= this.phases.length
     }
 
     get isEnded(){
-        return this.phase >= this.nbPhase
+        return this.phase >= this.phases.length
     }
     isPhase(phase){
         return this.phase == phase
@@ -175,6 +180,7 @@ class DataManager{
 }
 
 class Data{
+    rawData
     life = 0;
     born;
     date;
@@ -182,9 +188,10 @@ class Data{
         x : 0,
         y : 0
     }
-    noise = 1 + rdm()*99
+    noise = 1 + rdm()*50
 
-    constructor(_date,_life = 10,_x,_y){
+    constructor(rawData,_date,_life = 10,_x,_y){
+        this.rawData = rawData
         this.life = _life; // in millisecond
         this.born = _date; // time born 
         this.pos = {
@@ -205,10 +212,10 @@ class Data{
     draw(p){       
         
         let x = (this.age/this.life);
-        drawStar(p,this.pos.x, this.pos.y, 1,10,this.noise, [
-            vs(100)*127+vc(100)*127,
-            vs(200)*127+vc(300)*127,
-            vs(300)*127+vc(600)*127, 
+        drawStar(p,this.pos.x, this.pos.y, this.noise/2,200*x,this.noise, [
+            0,
+            0, 
+            110 + 40*x,
             255*easeInOut(x)]);
         // drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [
         //     vs(100)*127+vc(100)*127,
@@ -222,6 +229,10 @@ class Data{
 
 class DataType{
     type = "none";
+
+    static globalDraw(){
+        throw type + ": globalDraw : This function is not implemented"
+    }
 
     static getBounds(){
         throw type + ": getBounds : This function is not implemented"

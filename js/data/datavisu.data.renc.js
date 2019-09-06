@@ -9,8 +9,8 @@ class DataRenc extends Data{
     index
     pos
 
-    constructor(date,life,pos){
-        super(date,life,pos[0],pos[1]);
+    constructor(rawData,date,life,pos){
+        super(rawData,date,life,pos[0],pos[1]);
         this.pos = pos;
     }
 
@@ -51,7 +51,9 @@ class Renc extends DataType{
                 return;
             //orchestrate data
             fn(
-                new DataRenc((_dataMngr.datesBounds.totalTimeLength / _allRencLength)*indexToCall,
+                new DataRenc(
+                    data,
+                    (_dataMngr.datesBounds.totalTimeLength / _allRencLength)*indexToCall,
                     (_dataMngr.datesBounds.totalTimeLength / _allRencLength)*3,
                     [_map.getX(data.properties.geo_point_2d[1]),_map.getY(data.properties.geo_point_2d[0])])
             );

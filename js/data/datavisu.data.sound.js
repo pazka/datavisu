@@ -1,23 +1,34 @@
 
 
 //https://opendata.paris.fr/explore/dataset/velib-disponibilite-en-temps-reel/information/
-var  _storm = new Storm();
 
 class DataSound extends Data{
     constructor(date){
-        super(date,10000,_p.width/2,_p.height/2);
+        super(null,date,_dataMngr.datesBounds.totalTimeLength,_p.width/2,_p.height/2);
     }
 
     draw(p){
         let x = (this.age/this.life);
-        //super.draw(p);
-        _storm.draw(p)
+
+		// _shaderMngr.shaders.storm.run({
+		// 	iTime : _dataMngr.getTimeRef()/800,
+		// 	iResolution : [_map.dimension.width,_map.dimension.height],
+		// 	iMouse : [p.mouseX,p.mouseY]
+		// })
+		_shaderMngr.shaders.snow.run({
+			iTime : _dataMngr.getTimeRef()/1500,
+			iResolution : [_map.dimension.width,_map.dimension.height],
+		})
+        _shaderMngr.drawBuffer()
+		p.blendMode(p.HARD_LIGHT)
     }
 }
 
 class Sound extends DataType{
     type = "Sound";
 
+
+    
     static getBounds(json,dateBounds){/*
         json.forEach(data =>{
             if(Sound.exclude(data))

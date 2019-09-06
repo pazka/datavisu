@@ -1,8 +1,9 @@
-class DataMap {
+class DataMap {	
 	allPoly = [];
 	opacity = 255;
 	mapStrokeImg;
 	mapMaskImg;
+	zoom = 1.2
 
 	mapOn = false;
 	gridOn = false
@@ -42,10 +43,11 @@ class DataMap {
 		max : 0
 	}
 	gridColors = [
-		[255,255,255],
-		[255,170,170],
-		[255,85,85],
 		[255,0,0],
+		[0,255,0],
+		[0,0,255],
+		[255,255,0],
+		[255,255,255]
 	]
 
 	dimension = {
@@ -63,13 +65,13 @@ class DataMap {
 
 		//init map screen bounds vertices
 		for (let i = 0; i < this.screenBounds.lines.length; i++) {
-			this.screenBounds.lines[i][0][0] *= _p.width;
-			this.screenBounds.lines[i][1][0] *= _p.width;
-			this.screenBounds.lines[i][0][1] *= _p.height;
-			this.screenBounds.lines[i][1][1] *= _p.height;
+			this.screenBounds.lines[i][0][0] *= _p.width 
+			this.screenBounds.lines[i][1][0] *= _p.width 
+			this.screenBounds.lines[i][0][1] *= _p.height 
+			this.screenBounds.lines[i][1][1] *= _p.height 
 		}
 
-		//inir map screen bounds points
+		//init map screen bounds points
 		for (let i = 0; i < this.screenBounds.points.length; i++) {
 			this.screenBounds.points[i][0] *= _p.width;
 			this.screenBounds.points[i][1] *= _p.height;
@@ -171,7 +173,7 @@ class DataMap {
 		includedSquares.forEach((square)=>{
 			//draw vertex in grid with adequat color
 			let colorIndex = Math.floor((square.properties.pop - _map.popBounds.min)/step);
-			colorIndex  = colorIndex > 3 ? 3 :  colorIndex;
+			colorIndex  = colorIndex > this.gridColors.length-1 ? this.gridColors.length-1 :  colorIndex;
 			this.mapPopGrid.fill(_map.gridColors[colorIndex])
 
 			//draw Vertex
@@ -181,6 +183,17 @@ class DataMap {
 			})
 			this.mapPopGrid.endShape(this.mapPopGrid.CLOSE);
 		})
+
+		//draw ref 
+		let refSize = 30
+		for (let i = 0; i < this.gridColors.length; i++) {
+			const color = this.gridColors[i];
+			
+			this.mapPopGrid.fill(color);
+			this.mapPopGrid.textSize(34);
+			this.mapPopGrid.text( i+1,this.mapPopGrid.width-refSize-30,i*refSize + refSize/1.5);
+			this.mapPopGrid.square(this.mapPopGrid.width-refSize,i*refSize,refSize)
+		}
 	}
 
 	toggleMap(){
@@ -195,16 +208,12 @@ class DataMap {
 		//draw map
 		p.push()
 
-		_shaderMngr.shaders.storm.run()
-        _shaderMngr.drawBuffer()
-		p.blendMode(p.HARD_LIGHT)
-
 		if(this.mapOn){
 			p.image(this.mapStrokeImg, 0, 0);
 		}
 		else{
 			p.fill([0,0,0,this.opacity])   
-            p.stroke([255,0,0])
+			p.rect(0,0,p.width,p.height)
 		}
 		p.pop()
 
@@ -220,7 +229,7 @@ class DataMap {
             // "\r\n" +
             Math.round(_dataMngr.getTimeRef()) +
             "\r\n" +
-            "Progress : " + Math.round((_dataMngr.phase_time_elapsed + _dataMngr.getTimeRef()) / _dataMngr.datesBounds.totalPhasesTimeLength * 100, 2) + "%" +
+            "Progress : " + Math.round((_dataMngr.phase_time_elapsed + _dataMngr.getTimeRef()) / _dataMngr.phases.reduce((a,b) => a+b.totalTimeLength,0) * 100, 2) + "%" +
             "\r\n" +
             JSON.stringify(_bounds) +
             "\r\n" +
@@ -230,7 +239,13 @@ class DataMap {
             "\r\n" +
             "flock objective:" + _flock.objective[0] + "/" +_flock.objective[1]+
             "\r\n" +
-            "phase : "+_dataMngr.phase
+			"phase : "+_dataMngr.phase +
+			"\r\n" + 
+			"posX mouse /1 " + ( p.mouseX / p.width) +
+			"\r\n" + 
+			"nb data to disp : " + _dataMngr.allDataToDisplay.length 
+			//"\r\n" + 
+			//JSON.stringify(_dataMngr.allDataToDisplay,null,4)
             ;
 		}
 	}

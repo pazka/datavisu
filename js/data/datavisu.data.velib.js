@@ -2,8 +2,10 @@
 class DataVelib extends Data{
     size;
     colors;
-    constructor(date,life,x,y,_size = 15){
-        super(date,life,x,y);
+    type = "Velib"
+
+    constructor(rawData,date,life,x,y,_size = 15){
+        super(rawData,date,life,x,y);
         this.size = _size;
         this.colors=
         Array.from(Array(2 + Math.round(rdm()*5)).keys()).map(i=>[rdm()*255, rdm()*255, rdm()*255])
@@ -64,7 +66,8 @@ class Velib extends DataType{
 
             let tmp_d = _dataMngr.getRelTime(data.fields.duedate);
             fn(
-                new DataVelib(tmp_d,
+                new DataVelib(data,
+                    tmp_d,
                     Velib.avgLife,
                     pos_tmp[0],
                     pos_tmp[1],

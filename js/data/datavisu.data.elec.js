@@ -13,8 +13,8 @@ class DataElec extends Data{
     circleCurSpeed
     trail
 
-    constructor(date,life,circlesNumbers = 10,circleSpeed = 2){
-        super(date,life,0,0);
+    constructor(rawData,date,life,circlesNumbers = 10,circleSpeed = 2){
+        super(rawData,date,life,0,0);
 
         this.circleSpeed = circleSpeed;
         this.circlesNumbers = circlesNumbers;
@@ -50,7 +50,7 @@ class Elec extends DataType{
     static browse(json,fn){
         if(_singleElecData == undefined){
             //instantiate elec
-            _singleElecData = new DataElec(_dataMngr.getTimeRef(),_dataMngr.datesBounds.totalTimeLength);
+            _singleElecData = new DataElec(null,_dataMngr.getTimeRef(),_dataMngr.datesBounds.totalTimeLength);
           //  let tmpGraph =  _p.createGraphics(_p.width,_p.height);
             let coords;
             _singleElecData.dataCircles = [];

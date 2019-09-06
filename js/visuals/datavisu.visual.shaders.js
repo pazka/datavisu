@@ -10,6 +10,7 @@ class ShaderManager{
 
     loadShaders(){
         this.shaders.storm = new ShaderStorm(this.masterP5,this.p)
+        this.shaders.snow = new ShaderSnow(this.masterP5,this.p)
     }
     drawBuffer(){
         this.masterP5.image(this.p,0,0)
@@ -20,25 +21,54 @@ class ShaderManager{
     }
 }
 
-let _incr = 0;
-class ShaderStorm{
+//TODO 
+
+class Shader{
     p
     shader 
     
     constructor(masterP5, p){
         this.p = p
-        this.shader = masterP5.loadShader("js/shaders/datavisu.shader.storm.vert","js/shaders/datavisu.shader.storm.frag")
     //    this.shader.setUniform('iResolution',[p.width,p.height])
     }
 
-    run (){
-        this.shader.setUniform('iTime',_dataMngr.getTimeRef()/2000)
-        this.shader.setUniform('iResolution',[this.p.width,this.p.height])
+    run (uniforms){
+        if(uniforms == null){
+            throw "No property to iterate on. If it's empty put at least {}"
+        }
+
+        for (var uniform in uniforms) {
+            if (Object.prototype.hasOwnProperty.call(uniforms, uniform)) {
+                this.shader.setUniform(uniform,uniforms[uniform])
+            }
+        }
+
         this.p.quad(0,0,this.p.width,0,this.p.width,this.p.height,0,this.p.height)
         this.p.shader(this.shader)
     }
 
-    update (){
-        this.shader.setUniform('iTime',_dataMngr.getTimeRef()/2000)
+    update (uniforms){
+        if(uniforms == null){
+            throw "No property to iterate on. If it's empty put at least {}"
+        }
+
+        for (var uniform in uniforms) {
+            if (Object.prototype.hasOwnProperty.call(uniforms, uniform)) {
+                this.shader.setUniform(uniform,uniforms[uniform])
+            }
+        }
+    }
+}
+
+class ShaderStorm extends Shader{
+    constructor(masterP5, p){
+        super(masterP5,p);
+        this.shader = masterP5.loadShader("js/shaders/datavisu.shader.storm.vert","js/shaders/datavisu.shader.storm.frag")
+    }
+}
+class ShaderSnow extends Shader{
+    constructor(masterP5, p){
+        super(masterP5,p);
+        this.shader = masterP5.loadShader("js/shaders/datavisu.shader.snow.vert","js/shaders/datavisu.shader.snow.frag")
     }
 }

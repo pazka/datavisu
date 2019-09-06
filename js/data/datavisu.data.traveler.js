@@ -1,8 +1,8 @@
 class DataTraveler extends Data{
     pos
 
-    constructor(date,life,pos){
-        super(date,life,pos.x,pos.y);
+    constructor(rawData,date,life,pos){
+        super(rawData,date,life,pos.x,pos.y);
         this.pos = pos;
     }
 
@@ -37,7 +37,9 @@ class Traveler extends DataType{
                 return;
             
                 fn(
-                    new DataTraveler((_dataMngr.datesBounds.totalTimeLength / _allTravelerLength)*indexToCall,
+                    new DataTraveler(
+                        data,
+                        (_dataMngr.datesBounds.totalTimeLength / _allTravelerLength)*indexToCall,
                         (_dataMngr.datesBounds.totalTimeLength / _allTravelerLength),
                         [_map.getX(data.geometry.coordinates[0]),_map.getY(data.geometry.coordinates[1])])
                 );
