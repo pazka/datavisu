@@ -241,7 +241,7 @@ class DataMap {
             "\r\n" +
 			"phase : "+_dataMngr.phase +
 			"\r\n" + 
-			"posX mouse /1 " + ( p.mouseX / p.width) +
+			"posX mouse : " + ( p.mouseX / p.width) +
 			"\r\n" + 
 			"nb data to disp : " + _dataMngr.allDataToDisplay.length 
 			//"\r\n" + 

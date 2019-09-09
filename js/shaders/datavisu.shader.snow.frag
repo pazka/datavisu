@@ -6,30 +6,39 @@ precision mediump float;
 uniform vec2 iResolution;
 uniform float iTime;
 
+// const float iVar = 0.5;
+uniform float iVar;
+
+const float MAX_ITERATIONS = 1.;
 // "canonical" loop: change step size for fidelity and performance
-#define F for(float i = .1; i <.9; i+=.04)
+#define F for(float i = .1; i <0.4; i+=.04)
 void main()
 {	
     vec4 f = gl_FragColor;
     vec2 u = gl_FragCoord.xy;
 
     u /= iResolution.y;
-    
+
     f -= f;    
-    F 
+    
+     for(float i = .1; i <MAX_ITERATIONS; i+=.04)
     {
+        if(i > iVar) break;
         // vec2 on the next line defines direction and speed of the animation
-        vec3 p = vec3(u + (iTime/i - i)/vec2(30.,10.), i);
+        vec3 p = vec3(u + (iTime/i - i)/vec2(80.,90.), i);
 		            	
         p = abs(1.-mod(p, 2.));
         float a = length(p),
               b,
               c = 0.;
-        F
-          p = abs(p)/a/a - .57,   // <- Kali magic constant (between .5 .. .6 gives good results)
-          b = length(p),
-          c += abs(a-b),
-          a = b;        
+        for(float i = .1; i <MAX_ITERATIONS; i+=.04){
+            if(i > iVar) break;
+            
+            p = abs(p)/a/a - .57,   // <- Kali magic constant (between .5 .. .6 gives good results)
+            b = length(p),
+            c += abs(a-b),
+            a = b;  
+        }      
         
         c*=c;
                 

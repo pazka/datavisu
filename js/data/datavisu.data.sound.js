@@ -17,7 +17,8 @@ class DataSound extends Data{
 		// })
 		_shaderMngr.shaders.snow.run({
 			iTime : _dataMngr.getTimeRef()/1500,
-			iResolution : [_map.dimension.width,_map.dimension.height],
+            iResolution : [_map.dimension.width,_map.dimension.height],
+            iVar : p.mouseX / p.width
 		})
         _shaderMngr.drawBuffer()
 		p.blendMode(p.HARD_LIGHT)

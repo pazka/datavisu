@@ -34,7 +34,8 @@ class Shader{
 
     run (uniforms){
         if(uniforms == null){
-            throw "No property to iterate on. If it's empty put at least {}"
+            console.log("Run : No property to iterate on. If it's empty put at least {}")
+            return;
         }
 
         for (var uniform in uniforms) {
@@ -49,7 +50,8 @@ class Shader{
 
     update (uniforms){
         if(uniforms == null){
-            throw "No property to iterate on. If it's empty put at least {}"
+            console.log("Update : No property to iterate on. If it's empty put at least {}")
+            return;
         }
 
         for (var uniform in uniforms) {
