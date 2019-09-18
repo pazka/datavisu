@@ -8,7 +8,6 @@ let _stop = false;
 let _shaderMngr;
 //économie, environnement, vie cit , urbanisme
 
-let _bounds = [];
 let index = 0;
 
 
@@ -28,21 +27,15 @@ _p = new p5((p) => {
         p.fill('#000000')
 
         //preventing Date shit
-        import_velib_json.forEach(data =>{
-            data.fields.duedate =  (new Date(data.fields.duedate)).getTime() 
-        });
-
-        import_event_json.forEach(data =>{
-            data.properties.date_start = (new Date(data.properties.date_start)).getTime()
-            data.properties.date_end = (new Date(data.properties.date_end)).getTime()
-        });
-
+        // import_velib_json.forEach(data =>{
+        //     data.fields.duedate =  (new Date(data.fields.duedate)).getTime() 
+        // });
+        
         _map = new DataMap(p.width , p.height ,0, 0);
         _map.setup(import_pdz_json)
         _map.prepareMask(_p)
         _dataMngr = new DataManager()
-        _dataMngr.updateBounds(Velib.getBounds(import_velib_json, { maxDate: 0, minDate: Infinity }))
-        _dataMngr.updateBounds(Event.getBounds(import_event_json, _dataMngr.datesBounds))
+       // _dataMngr.updateBounds(Velib.getBounds(import_velib_json, { maxDate: 0, minDate: Infinity }))
         _map.setupGrid(import_carroyage_json);
         _dataMngr.newPhase()
 
@@ -65,7 +58,7 @@ _p = new p5((p) => {
         //p.scale(_map.zoom)
         //p.translate(-p.width*((_map.zoom - 1)/2),-p.height*((_map.zoom-1)/2));
         _map.draw(_p);
-
+        
         _dataMngr.drawData();
 
         _map.drawMask(_p);
@@ -73,16 +66,6 @@ _p = new p5((p) => {
         if (_isCapturing)
             _capturer.capture(_canvas.canvas);
     }
-
-    /* p.mouseClicked = (m)=>{
-         if(!m.ctrlKey)        
-         _bounds.push({
-             i : index++,
-             x : p.mouseX/p.width,
-             y : p.mouseY/p.height
-         })
-         
-     }*/
 
 
     p.keyPressed = function () {
