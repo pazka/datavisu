@@ -2,7 +2,6 @@ precision mediump float;
 
 uniform float iTime;
 uniform vec2 iResolution;
-uniform vec2 iMouse;
 
 
 float noise(vec3 p)
@@ -40,12 +39,13 @@ float turb(vec3 p)
 		div +=inc;
 	}
 	float v = n/div;
-	v *= 1.-max(0.,3.8-length(vec3(.5,0.,6.)-p));
+	v *= 1.-max(0.,2.8-length(vec3(.5,0.,6.)-p));
 	return v;
 }
 
 
 uniform float iPos;
+uniform float iVar;
 void main( )
 {
 	// Normalized pixel coordinates (from -1 to 1)
@@ -74,9 +74,10 @@ void main( )
 		nv = turb(vec3(rd.xy,rd.z+i));
 		col += (1.5-i)*vec3(nv,nv*nv*(3.-2.*nv), nv*nv);
 	}
-	col /=5.;
+	col /= iVar * 15.;
+
 	//bluerisation
-	col *= vec3(0.1,0.2,2);
+	col *= vec3(0.1,0.2,5.);
 	
 	gl_FragColor = vec4(col,1.);
 }

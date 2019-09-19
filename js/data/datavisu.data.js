@@ -20,6 +20,13 @@ class DataManager{
         dateSpan : 0
     }
 
+    constructor(allDataTypes){
+        this.allDataTypes = allDataTypes
+        this.allDataTypes.forEach(type => {
+            type.preloadData()
+        });
+    }
+
     //phase init at 0 for init purpose
     phase = 0;
     phases = [
@@ -57,14 +64,14 @@ class DataManager{
                     _dataMngr.addData(cafe);
                 })
             }
-        },{
+        },*/{
             totalTimeLength : 2 * 60 * 1000,
             action: ()=>{ 
-                Sound.browse(import_sound_json, (storm) => {
+                Air.browse((storm) => {
                     _dataMngr.addData(storm);
                 })
             }
-        }*/
+        }
     ]
 
     loadDates() {
@@ -74,17 +81,25 @@ class DataManager{
         if(this.phases[this.phase] != undefined ) this.phases[this.phase].action();
     }
 
-    updateBounds(newBounds){
-        if(newBounds.minDate < this.datesBounds.minDate){
-            this.datesBounds.minDate = newBounds.minDate;
-            this.datesBounds._typedMinDate = new Date(this.datesBounds.minDate);
-        }
-        if(newBounds.maxDate > this.datesBounds.maxDate){
-            this.datesBounds.maxDate = newBounds.maxDate;
-            this.datesBounds._typedMaxDate = new Date(this.datesBounds.maxDate);
+    updateDateBounds(){
+        this.datesBounds = { maxDate: 0, minDate: Infinity };
 
-        }
-        this.datesBounds.dateSpan = this.datesBounds.maxDate- this.datesBounds.minDate;
+    
+        let newBounds
+        this.allDataTypes.forEach(dataType => {
+
+            newBounds = dataType.getDateBounds();
+            if(newBounds.minDate < this.datesBounds.minDate){
+                this.datesBounds.minDate = newBounds.minDate;
+                this.datesBounds._typedMinDate = new Date(this.datesBounds.minDate);
+            }
+            if(newBounds.maxDate > this.datesBounds.maxDate){
+                this.datesBounds.maxDate = newBounds.maxDate;
+                this.datesBounds._typedMaxDate = new Date(this.datesBounds.maxDate);
+    
+            }
+            this.datesBounds.dateSpan = this.datesBounds.maxDate- this.datesBounds.minDate;
+        })
     }
     
 
@@ -228,9 +243,12 @@ class Data{
 }
 
 class DataType{
-    type = "none";
+    static get type () { return "None"}
+    _nbData = 0
+    static get nbData () { return  this._nbData}
+    static set nbData (n) { this._nbData = n}
 
-    static globalDraw(){
+    static globalDraw(p,data){
         throw type + ": globalDraw : This function is not implemented"
     }
 

@@ -26,17 +26,13 @@ _p = new p5((p) => {
         p.background('#000000')
         p.fill('#000000')
 
-        //preventing Date shit
-        // import_velib_json.forEach(data =>{
-        //     data.fields.duedate =  (new Date(data.fields.duedate)).getTime() 
-        // });
         
         _map = new DataMap(p.width , p.height ,0, 0);
-        _map.setup(import_pdz_json)
+        _map.setup()
         _map.prepareMask(_p)
-        _dataMngr = new DataManager()
-       // _dataMngr.updateBounds(Velib.getBounds(import_velib_json, { maxDate: 0, minDate: Infinity }))
-        _map.setupGrid(import_carroyage_json);
+        _dataMngr = new DataManager([Air])
+        _dataMngr.updateDateBounds()
+        _map.setupGrid();
         _dataMngr.newPhase()
 
         let elem = document.querySelector('#loading');

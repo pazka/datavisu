@@ -1,11 +1,13 @@
 class DataMap {	
+	pdz = import_pdz_json
+	grid = import_carroyage_json
 	allPoly = [];
 	opacity = 255;
 	mapStrokeImg;
 	mapMaskImg;
 	zoom = 1;
 
-	mapOn = true;
+	mapOn = false;
 	gridOn = false
 	logOn = true;
 	mapPopGrid;
@@ -59,9 +61,9 @@ class DataMap {
 		this.pos.y = posy;
 	}
 
-	setup = (json) => {
+	setup = () => {
 		//prepare bounds
-		json.forEach(coords => {
+		this.pdz.forEach(coords => {
 			if (coords[0] < this.internalGeoBounds.minX)
 				this.internalGeoBounds.minX = coords[0];
 			if (coords[0] > this.internalGeoBounds.maxX)
@@ -92,7 +94,7 @@ class DataMap {
 
 		//prepare polygon to screen coordonates
 		let mapScreenPoly = [];
-		json.forEach(coords => {
+		this.pdz.forEach(coords => {
 			this.screenBounds.points.push([this.getX(coords), this.getY(coords)])
 
 			mapScreenPoly.push([this.getX(coords), this.getY(coords)]);
@@ -113,16 +115,15 @@ class DataMap {
 			this.mapStrokeImg.vertex(coord[0],coord[1])
 		}
 		this.mapStrokeImg.endShape(this.mapStrokeImg.CLOSE)
-		
 	}
 
-	setupGrid(json){
+	setupGrid(){
 		let includedSquares = []
 		//draw Squares
 		this.mapPopGrid = _p.createGraphics(_p.width, _p.height);
 		this.mapPopGrid.noStroke()
 
-		json.forEach((square)=>{
+		this.grid.forEach((square)=>{
 			//check every point if out of bounds
 			let toExclude = true
 

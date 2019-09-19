@@ -10,6 +10,7 @@ class ShaderManager{
 
     loadShaders(){
         this.shaders.storm = new ShaderStorm(this.masterP5,this.p)
+        this.shaders.storm2 = new ShaderStorm2(this.masterP5,this.p)
         this.shaders.snow = new ShaderSnow(this.masterP5,this.p)
     }
     drawBuffer(){
@@ -72,5 +73,11 @@ class ShaderSnow extends Shader{
     constructor(masterP5, p){
         super(masterP5,p);
         this.shader = masterP5.loadShader("js/shaders/datavisu.shader.snow.vert","js/shaders/datavisu.shader.snow.frag")
+    }
+}
+class ShaderStorm2 extends Shader{
+    constructor(masterP5, p){
+        super(masterP5,p);
+        this.shader = masterP5.loadShader("js/shaders/datavisu.shader.storm2.vert","js/shaders/datavisu.shader.storm2.frag")
     }
 }
