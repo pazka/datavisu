@@ -56,10 +56,11 @@ class Air extends DataType{
         Air.dataFadeLeft *= 0.65
         this.lastData = data
 
-		_shaderMngr.shaders.storm.run({
+		_shaderMngr.shaders.storm2.run({
 			iTime : _dataMngr.getTimeRef()/800,
 			iResolution : [_map.dimension.width,_map.dimension.height],
-            iVar : data.rawData.fields.valeur + Air.dataFadeLeft
+            iVar : data.rawData.fields.valeur + Air.dataFadeLeft,
+            iPos : [ p.mouseX / p.width, p.mouseY / p.height ]
         })
         _shaderMngr.drawBuffer()
 		p.blendMode(p.HARD_LIGHT)

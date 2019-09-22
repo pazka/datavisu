@@ -2,16 +2,17 @@ precision mediump float;
 
 uniform float iTime;
 uniform vec2 iResolution;
+uniform vec2 iPos;
 
-const float cloudscale = 1.1;
+const float cloudscale = 1.9;
 const float speed = 0.03;
-const float clouddark = 0.5;
-const float cloudlight = 0.3;
-const float cloudcover = 0.2;
-const float cloudalpha = 8.0;
-const float skytint = 0.5;
-const vec3 skycolour1 = vec3(0.2, 0.4, 0.6);
-const vec3 skycolour2 = vec3(0.4, 0.7, 1.0);
+const float clouddark = 0.2;
+const float cloudlight = 0.9;
+const float cloudcover = 0.01;
+const float cloudalpha = 1.;
+const float skytint = 0.9;
+const vec3 skycolour1 = vec3(0.0, 0.0, 0.0);
+const vec3 skycolour2 = vec3(0.0, 0.2667, 0.5333);
 
 const mat2 m = mat2( 1.6,  1.2, -1.2,  1.6 );
 
@@ -45,9 +46,7 @@ float fbm(vec2 n) {
 
 // -----------------------------------------------
 
-vec3 colorCloud() {
-    vec2 p = gl_FragCoord.xy / iResolution.xy;
-	vec2 uv = p*vec2(iResolution.x/iResolution.y,1.0);    
+vec3 colorCloud(vec2 uv,vec2 p) {   
     float time = iTime * speed;
     float q = fbm(uv * cloudscale * 0.5);
     
@@ -113,7 +112,15 @@ vec3 colorCloud() {
 	
 }
 
+
+
 void main(){
-    vec3 c = colorCloud();
+    vec2 p = gl_FragCoord.xy / iResolution.xy;
+
+    p *= (cos(p.x + iPos.x) + sin(p.y + iPos.y));
+    p += iPos;
+
+	vec2 uv = p*vec2(iResolution.x/iResolution.y,1.0); 
+    vec3 c = colorCloud(uv,p);
     gl_FragColor = vec4( c, 1.0 );
 }
