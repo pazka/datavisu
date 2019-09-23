@@ -4,17 +4,17 @@ uniform float iTime;
 uniform vec2 iResolution;
 uniform vec2 iPos;
 
-const float cloudscale = 1.9;
+const float cloudscale = 1.1;
 const float speed = 0.03;
-const float clouddark = 0.2;
-const float cloudlight = 0.9;
-const float cloudcover = 0.01;
-const float cloudalpha = 1.;
-const float skytint = 0.9;
-const vec3 skycolour1 = vec3(0.0, 0.0, 0.0);
-const vec3 skycolour2 = vec3(0.0, 0.2667, 0.5333);
+const float clouddark = 0.1;
+const float cloudlight = 0.1;
+const float cloudcover = 0.1;
+const float cloudalpha = 0.2;
+const float skytint = 0.1;
+const vec3 skycolour1 = vec3(0.0, 0.149, 1.0);
+const vec3 skycolour2 = vec3(0.0, 0.0, 0.0745);
 
-const mat2 m = mat2( 1.6,  1.2, -1.2,  1.6 );
+const mat2 m = mat2( 1.6,  1.2, -.6,  1.6 );
 
 vec2 hash( vec2 p ) {
 	p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
@@ -48,10 +48,10 @@ float fbm(vec2 n) {
 
 vec3 colorCloud(vec2 uv,vec2 p) {   
     float time = iTime * speed;
-    float q = fbm(uv * cloudscale * 0.5);
+    float q = fbm(uv * cloudscale * 0.01);
     
     //ridged noise shape
-	float r = 0.0;
+	float r = 0.6;
 	uv *= cloudscale;
     uv -= q - time;
     float weight = 0.8;
@@ -81,7 +81,7 @@ vec3 colorCloud(vec2 uv,vec2 p) {
     uv = p*vec2(iResolution.x/iResolution.y,1.0);
 	uv *= cloudscale*2.0;
     uv -= q - time;
-    weight = 0.4;
+    weight = 5.9;
     for (int i=0; i<7; i++){
 		c += weight*noise( uv );
         uv = m*uv + time;
@@ -103,12 +103,12 @@ vec3 colorCloud(vec2 uv,vec2 p) {
 	
     c += c1;
     
-    vec3 skycolour = mix(skycolour2, skycolour1, p.y);
-    vec3 cloudcolour = vec3(1.1, 1.1, 0.9) * clamp((clouddark + cloudlight*c), 0.0, 1.0);
+    vec3 skycolour = mix(skycolour1, skycolour2, p.y);
+    vec3 cloudcolour = vec3(.9, .9, .9) * clamp((clouddark + cloudlight*c), 0.0, 1.0);
    
     f = cloudcover + cloudalpha*f*r;
     
-    return mix(skycolour, clamp(skytint * skycolour + cloudcolour, 0.0, 1.0), clamp(f + c, 0.0, 1.0));
+    return cloudcolour;
 	
 }
 
