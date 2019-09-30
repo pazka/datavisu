@@ -42,7 +42,9 @@ class Air extends DataType{
             if(Air.exclude(data))
                 return;
             nb++
-            data.fields.valeur = (10-data.fields.valeur) /10
+            //9 = mauvais , 1 = bon
+            data.fields.uvaleur = (10 - data.fields.valeur) /10
+            // 1 = mauvais, 9 = bon
         });
         Air.nbData = nb
     }
@@ -51,7 +53,7 @@ class Air extends DataType{
         if(!this.lastData)
             Air.dataFadeLeft = 0
         else
-            Air.dataFadeLeft += this.lastData.rawData.fields.valeur - data.rawData.fields.valeur 
+            Air.dataFadeLeft += this.lastData.rawData.fields.uvaleur - data.rawData.fields.uvaleur 
         
         Air.dataFadeLeft *= 0.65
         this.lastData = data
@@ -59,7 +61,7 @@ class Air extends DataType{
 		_shaderMngr.shaders.storm2.run({
 			iTime : _dataMngr.getTimeRef()/800,
 			iResolution : [_map.dimension.width,_map.dimension.height],
-            iVar : data.rawData.fields.valeur + Air.dataFadeLeft,
+            iVar : data.rawData.fields.uvaleur + Air.dataFadeLeft,
             iPos : [ p.mouseX / p.width, p.mouseY / p.height ]
         })
         _shaderMngr.drawBuffer()
