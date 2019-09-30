@@ -120,8 +120,8 @@ vec3 colorCloud(vec2 uv,vec2 p, vec3 skycolour1, vec3 skycolour2,vec3 pcc,float 
 void main(){
     vec2 p = gl_FragCoord.xy / iResolution.xy;
 
-    p *= (cos(p.x + iPos.x) + sin(p.y + iPos.y));
-    p += iPos;
+    p *= (cos(p.x + 1.) + sin(p.y + 1.));
+    p += vec2(1.,1.);
 
 	vec2 uv = p*vec2(iResolution.x/iResolution.y,1.0); 
     vec3 c2 = colorCloud(uv*2.,p*4.,vec3(0.0157, 0.0, 0.8863),vec3(0.0196, 0.051, 0.2314),vec3(.5, .5, 1.0),0.5);
