@@ -278,6 +278,7 @@ class DataMap {
 		//get ratio
 		//normal case
 		let position =
+		
 		(1-this.internalGeoBounds.orientation)	* (pos[1] - this.internalGeoBounds.minY)+
 		this.internalGeoBounds.orientation		* (pos[0] - this.internalGeoBounds.minX);
 		

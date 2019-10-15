@@ -28,51 +28,25 @@ class DataManager{
     }
 
     //phase init at 0 for init purpose
-    phase = 0;
     phases = [
-        /*()=>{ //phase 1
-            _map.opacity = 10
-            _flock.setup()
-
-            Traveler.browse(import_traveler_json, (travel) => {
-                _dataMngr.addData(travel);
-            })
-        },
-        ()=>{ //phase 2
-            _map.opacity = 100
-            _flock.hide()
-            Elec.browse(import_elec_json, (elec) => {
-                _dataMngr.addData(elec);
-            })
-        
-        
-            Renc.browse(import_renc_json, (renc) => {
-                _dataMngr.addData(renc);
-            })
-        },{
+        {
             totalTimeLength : 2 * 60 * 1000,
-            action : ()=>{//phase 3
-                Velib.browse(import_velib_json, (velib) => {
-                    _dataMngr.addData(velib);
-                })
-        
-                Event.browse(import_event_json, (event) => {
-                    _dataMngr.addData(event);
-                })
-        
-                Cafe.browse(import_cafe_json, (cafe) => {
-                    _dataMngr.addData(cafe);
+            action: ()=>{ 
+                Sirene.browse((bat) => {
+                    _dataMngr.addData(bat);
                 })
             }
-        },*/{
+        },/*{
             totalTimeLength : 2 * 60 * 1000,
             action: ()=>{ 
                 Air.browse((storm) => {
                     _dataMngr.addData(storm);
                 })
             }
-        }
+        }*/
     ]
+    
+    phase = 1 ;
 
     loadDates() {
        // let loadProg = document.getElementById('loading-progress');
@@ -227,17 +201,20 @@ class Data{
     draw(p){       
         
         let x = (this.age/this.life);
+        //stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])
+        
         drawStar(p,this.pos.x, this.pos.y, this.noise/2,200*x,this.noise, [
             0,
             0, 
             110 + 40*x,
             255*easeInOut(x)]);
+            
+
         // drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [
         //     vs(100)*127+vc(100)*127,
         //     vs(200)*127+vc(300)*127,
         //     vs(300)*127+vc(600)*127, 
         //     255*easeInOut(x)]); // https://www.desmos.com/calculator/mwj90u8atr => f\left(x\right)=100-\frac{x}{110-x}\cdot10
-       // stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])
     //    "a"+p.text(Math.round(this.age )+ " b" + Math.round(this.born) + " d"+ Math.round(this.date)+ " ", this.pos.x,this.pos.y);
     }
 }
@@ -252,7 +229,7 @@ class DataType{
         throw type + ": globalDraw : This function is not implemented"
     }
 
-    static getBounds(){
+    static getDateBounds(){
         throw type + ": getBounds : This function is not implemented"
     }
 
