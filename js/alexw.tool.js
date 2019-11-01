@@ -24,8 +24,8 @@ function vc1(speed = 500) {
 function mr(x) {
     return Math.round(x);
 }
-function easeInOut(x){
-    return (1-Math.abs((0.5-x)*2))
+function easeInOut(x) {
+    return (1 - Math.abs((0.5 - x) * 2))
 }
 
 let logs = "";
@@ -48,14 +48,14 @@ function isInsidePoly(point, vs) {
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     // https://github.com/substack/point-in-polygon 
 
-    let x,y;
-    if(point.x != undefined ||point.y != undefined){
-    x = point.x
-     y = point.y;
+    let x, y;
+    if (point.x != undefined || point.y != undefined) {
+        x = point.x
+        y = point.y;
     }
-    else{
+    else {
         x = point[0]
-        y = point[1];    
+        y = point[1];
     }
 
     let inside = false;
@@ -121,7 +121,7 @@ function opacityFn(x) {
     return (100 - (255 / x + 1) - (x / (255 - x)))
 }
 
-function drawStar(p, x, y, radius1, radius2, npoints,color) {
+function drawStar(p, x, y, radius1, radius2, npoints, color) {
     p.push()
     p.noStroke()
     p.fill(color)
@@ -129,14 +129,37 @@ function drawStar(p, x, y, radius1, radius2, npoints,color) {
     let halfAngle = angle / 2.0;
     p.beginShape();
     for (let a = 0; a < p.TWO_PI; a += angle) {
-      let sx = x + _p.cos(a) * radius2;
-      let sy = y + _p.sin(a) * radius2;
-      p.vertex(sx, sy);
-      sx = x + p.cos(a + halfAngle) * radius1;
-      sy = y + p.sin(a + halfAngle) * radius1;
-      p.vertex(sx, sy);
+        let sx = x + _p.cos(a) * radius2;
+        let sy = y + _p.sin(a) * radius2;
+        p.vertex(sx, sy);
+        sx = x + p.cos(a + halfAngle) * radius1;
+        sy = y + p.sin(a + halfAngle) * radius1;
+        p.vertex(sx, sy);
     }
     p.endShape(p.CLOSE);
     p.pop()
-  }
-  
+}
+
+function drawStarGradient(p, x, y, radius1, radius2, npoints, color1, color2, pass) {
+    if(!pass){
+        pass = 5;
+    }
+
+    pass = pass - 1
+
+    let colorStep = [
+        (color1[0] - color2[0])/pass,
+        (color1[1] - color2[1])/pass,
+        (color1[2] - color2[2])/pass
+    ]
+    let radiusStep = (radius2 - radius2) / pass
+
+    for (let i = 0; i <= pass; i++) {
+        drawStar(p,x,y,
+            radius1,
+            radius1 + radiusStep * i,
+            npoints,
+            color1,
+            color1 + colorStep * i)
+    }
+}
