@@ -80,10 +80,12 @@ class DataManager{
     drawData(){
         //draw
         let i = 0;
+        let prevData = null;
         this.allDataToDisplay.forEach(data => {
             if(data.age > 0){
                 _p.push()
-                data.draw(_p)
+                data.draw(_p,prevData)
+                prevData= data;
                 _p.pop()
 
                 if(data.hasLived)

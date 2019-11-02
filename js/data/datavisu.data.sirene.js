@@ -6,7 +6,7 @@ class DataSirene extends Data {
 
     constructor(rawData, date, life, x, y, _size = 15) {
         super(rawData, date, life, x, y);
-        this.size = _size;
+        this.size = _size
         this.colors =
             Array.from(
                 Array(
@@ -17,13 +17,19 @@ class DataSirene extends Data {
             ).map(i => [rdm() * 255, rdm() * 255, rdm() * 255])
     }
 
-    draw(p) {
+    draw(p,sister) {
         let x = (this.age / this.life);
 
-        drawStarGradient(p, this.pos.x, this.pos.y, 1, vs(this.noise * this.noise * 100) * 50 * easeInOut(x), this.noise,
-            [255,255,255, 255 * easeInOut(x)],
-            [25,25,255, 255 * easeInOut(x)]
+        drawStar(p, this.pos.x, this.pos.y, 1, 2* easeInOut(x), this.noise/100*5,
+            [255,255,255, 255 * easeInOut(x)]
             )
+
+        if(sister){
+            p.push()
+            p.stroke([255,255,255,255*easeInOut((x + sister.age/sister.life)/2)])
+            p.line(this.pos.x,this.pos.y,sister.pos.x,sister.pos.y)
+            p.pop()
+        }
 
         //super.draw(p);
     }
@@ -63,8 +69,9 @@ class Sirene extends DataType {
         Sirene.dateBounds = dateBounds
         return dateBounds;
     }
-
+    
     static browse(fn) {
+        let lastData = null;
         Sirene.json.forEach(data => {
             let pos_tmp = [
                 _map.getX(data.geometry.coordinates),
@@ -72,15 +79,15 @@ class Sirene extends DataType {
             ]
 
             let tmp_d = _dataMngr.getRelTime(new Date(data.properties.DCRET.substring(0, 4), data.properties.DCRET.substring(4, 6), data.properties.DCRET.substring(6, 8)).getTime());
-            fn(
 
-                new DataSirene(data,
-                    tmp_d,
-                    Sirene.avgLife,
-                    pos_tmp[0],
-                    pos_tmp[1],
-                    19)
-            );
+            //used to draw lines from one to another
+            fn(new DataSirene(data,
+                tmp_d,
+                Sirene.avgLife,
+                pos_tmp[0],
+                pos_tmp[1],
+                19)
+                )
         });
     }
 }
