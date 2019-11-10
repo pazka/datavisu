@@ -19,7 +19,11 @@ class DataSirene extends Data {
 
     draw(p) {
         let x = (this.age / this.life);
-
+ 
+        drawStar(p, this.pos.x, this.pos.y, 1, 2* easeInOut(x), this.noise/100*5,
+            [255,255,255, 255 * easeInOut(x)]
+            )
+            /*
         drawStarGradient(p, this.pos.x, this.pos.y,
             3, 
             this.noise *10* easeInOut(x), 
@@ -28,7 +32,7 @@ class DataSirene extends Data {
             [25,25,255, 255 * easeInOut(x)],
             3
         )
-
+*/
         //super.draw(p);
     }
 }

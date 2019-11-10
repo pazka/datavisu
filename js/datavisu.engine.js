@@ -3,7 +3,7 @@ let _p;
 let _dataMngr;
 let _frameRate = 30;
 let _canvas;
-let _isCapturing = false;
+let _isCapturing = getParameterByName('save',window.location.href);
 let _stop = false;
 let _shaderMngr;
 //économie, environnement, vie cit , urbanisme

@@ -12,7 +12,6 @@ class DataMap {
 	logOn = true;
 	mapPopGrid;
 
-
 	screenBounds = {
 		lines: [],
 		points: [],
@@ -200,7 +199,7 @@ class DataMap {
 
 		//
 		if (this.logOn) {
-			document.getElementById("logs").innerHTML = "S : Save / C : Carroyage / L : Logs / M : map / P : pause"
+			document.getElementById("logs").innerHTML = "S : <a href='/?save=true' style='color = white'>Save</a> / C : Carroyage / L : Logs / M : map / P : pause"
 				+ "\r\n" +
 				_dataMngr.getCurrentProjectedDate().toLocaleString('fr-FR', { timeZone: 'UTC' }) +
 				"\r\n" +

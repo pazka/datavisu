@@ -34,14 +34,14 @@ class DataManager {
 
     //phase init at 0 for init purpose
     phases = [
-        {
+        /*{
             totalTimeLength: 2 * 60 * 1000,
             action: () => {
                 Ril.browse((bat) => {
                     _dataMngr.addData(bat);
                 })
             }
-        },/*
+        },*/
         {
             totalTimeLength : 2 * 60 * 1000,
             action: ()=>{ 
@@ -49,7 +49,7 @@ class DataManager {
                     _dataMngr.addData(comm);
                 })
             }
-        },*//*{
+        },/*{
             totalTimeLength : 2 * 60 * 1000,
             action: ()=>{ 
                 Air.browse((storm) => {
@@ -59,7 +59,7 @@ class DataManager {
         }*/
     ]
 
-    phase = 1;
+    phase = -1;
 
     loadDates() {
         // let loadProg = document.getElementById('loading-progress');
@@ -183,18 +183,27 @@ class DataManager {
 
     newPhase() {
         this.allDataToDisplay = [];
+        this.allDataToDisplay1 = [];
+        this.allDataToDisplay2 = [];
+
         //TODO faire ça propre
+        this.phase++;
         this.datesBounds.totalTimeLength = this.phases[this.phase] ? this.phases[this.phase].totalTimeLength : 0;
         this.phase_time_elapsed += this.phases[this.phase] ? this.phases[this.phase].totalTimeLength : 0;
-        this.phase++;
 
         if (this.isEnded) {
             this.phase = 0;
             this.phase_time_elapsed = 0;
 
-            if (_isCapturing) {
-                _capturer.stop()
-                _capturer.save()
+            if (_isCapturing ) {
+                try {
+                    _capturer.stop()
+                    _capturer.save()
+                } catch (error) {
+                    console.log(error);
+                }
+
+                //to completely stop the engine
                 this.phase = this.phases.length + 1
                 _stop = true
             }
