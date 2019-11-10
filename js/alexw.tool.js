@@ -6,31 +6,40 @@ function getFrame(framePerAction, fn) {
 }
 
 function rdm() {
-    return Math.random();
+    return Math.random()
+}
+
+//noise function
+let noiseScale = [1,1]
+function ns1(x){
+    return _p.noise(noiseScale[0]) * x
+}
+function ns2(x,y){
+    return [_p.noise(noiseScale[0]) * x, _p.noise(noiseScale[1]) * y]
 }
 
 function vs(speed = 500) {
-    return (_p.sin((_dataMngr.getTimeRef() / speed)) + 1) / 2;
+    return (_p.sin((_dataMngr.getTimeRef() / speed)) + 1) / 2
 }
 function vc(speed = 500) {
-    return (_p.cos((_dataMngr.getTimeRef() / speed)) + 1) / 2;
+    return (_p.cos((_dataMngr.getTimeRef() / speed)) + 1) / 2
 }
 function vs1(speed = 500) {
-    return (_p.sin((_dataMngr.getTimeRef() / speed)));
+    return (_p.sin((_dataMngr.getTimeRef() / speed)))
 }
 function vc1(speed = 500) {
-    return (_p.cos((_dataMngr.getTimeRef() / speed)));
+    return (_p.cos((_dataMngr.getTimeRef() / speed)))
 }
 function mr(x) {
-    return Math.round(x);
+    return Math.round(x)
 }
 function easeInOut(x) {
     return (1 - Math.abs((0.5 - x) * 2))
 }
 
-let logs = "";
+let logs = ""
 function _log(str) {
-    logs += str + ";";
+    logs += str + ";"
 }
 
 function isInsideCircles(coords, center, radiusMin, radiusMax) {
@@ -48,28 +57,28 @@ function isInsidePoly(point, vs) {
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     // https://github.com/substack/point-in-polygon 
 
-    let x, y;
+    let x, y
     if (point.x != undefined || point.y != undefined) {
         x = point.x
-        y = point.y;
+        y = point.y
     }
     else {
         x = point[0]
-        y = point[1];
+        y = point[1]
     }
 
-    let inside = false;
+    let inside = false
     for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-        let xi = vs[i][0], yi = vs[i][1];
-        let xj = vs[j][0], yj = vs[j][1];
+        let xi = vs[i][0], yi = vs[i][1]
+        let xj = vs[j][0], yj = vs[j][1]
 
         let intersect = ((yi > y) != (yj > y))
-            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+        if (intersect) inside = !inside
     }
 
-    return inside;
-};
+    return inside
+}
 
 function drawGradientTriangle(p, base, vertex, colorBase, colorVertex, steps, gradientFunctions) {
     let gf = gradientFunctions ? gradientFunctions : new Array(4).map(() => (x, i, t) => x)
@@ -79,7 +88,7 @@ function drawGradientTriangle(p, base, vertex, colorBase, colorVertex, steps, gr
         ((colorVertex[1] - colorBase[1]) / steps),
         ((colorVertex[2] - colorBase[2]) / steps),
         ((colorVertex[3] - colorBase[3]) / steps)
-    ];
+    ]
     let vectFirstSegment = [
         (vertex[0] - base[0][0]) / steps, (vertex[1] - base[0][1]) / steps
     ]
@@ -93,9 +102,9 @@ function drawGradientTriangle(p, base, vertex, colorBase, colorVertex, steps, gr
             colorBase[1] + vectColor[1] * step,
             colorBase[2] + vectColor[2] * step,
             colorBase[3] + vectColor[3] * step
-        ]);
+        ])
 
-        p.beginShape();
+        p.beginShape()
         //drawBase
         p.vertex(base[0][0] + vectFirstSegment[0] * step, base[0][1] + vectFirstSegment[1] * step);
         p.vertex(base[1][0] + vectSecondSegment[0] * step, base[1][1] + vectSecondSegment[1] * step);
@@ -112,7 +121,7 @@ function drawGradientTriangle(p, base, vertex, colorBase, colorVertex, steps, gr
         p.vertex(base[1][0] + vectSecondSegment[0] * (step + 1), base[1][1] + vectSecondSegment[1] * (step + 1));
         p.vertex(base[0][0] + vectFirstSegment[0] * (step + 1), base[0][1] + vectFirstSegment[1] * (step + 1));
 
-        p.endShape(p.CLOSE);
+        p.endShape(p.CLOSE)
     }
 }
 
@@ -125,41 +134,46 @@ function drawStar(p, x, y, radius1, radius2, npoints, color) {
     p.push()
     p.noStroke()
     p.fill(color)
-    let angle = p.TWO_PI / npoints;
-    let halfAngle = angle / 2.0;
-    p.beginShape();
+    let angle = p.TWO_PI / npoints
+    let halfAngle = angle / 2.0
+    p.beginShape()
     for (let a = 0; a < p.TWO_PI; a += angle) {
-        let sx = x + _p.cos(a) * radius2;
-        let sy = y + _p.sin(a) * radius2;
-        p.vertex(sx, sy);
-        sx = x + p.cos(a + halfAngle) * radius1;
-        sy = y + p.sin(a + halfAngle) * radius1;
-        p.vertex(sx, sy);
+        let sx = x + _p.cos(a) * radius2
+        let sy = y + _p.sin(a) * radius2
+        p.vertex(sx, sy)
+        sx = x + p.cos(a + halfAngle) * radius1
+        sy = y + p.sin(a + halfAngle) * radius1
+        p.vertex(sx, sy)
     }
-    p.endShape(p.CLOSE);
+    p.endShape(p.CLOSE)
     p.pop()
 }
 
 function drawStarGradient(p, x, y, radius1, radius2, npoints, color1, color2, pass) {
     if(!pass){
-        pass = 5;
+        pass = 5
     }
 
     pass = pass - 1
 
     let colorStep = [
-        (color1[0] - color2[0])/pass,
-        (color1[1] - color2[1])/pass,
-        (color1[2] - color2[2])/pass
+        (color2[0] - color1[0])/pass,
+        (color2[1] - color1[1])/pass,
+        (color2[2] - color1[2])/pass,
+        (color2[3] - color1[3])/pass
     ]
-    let radiusStep = (radius2 - radius2) / pass
+    let radiusStep = (radius2 - radius1) / pass
 
     for (let i = 0; i <= pass; i++) {
         drawStar(p,x,y,
             radius1,
-            radius1 + radiusStep * i,
+            radius2 - radiusStep * i,
             npoints,
-            color1,
-            color1 + colorStep * i)
+            [
+                color2[0] - colorStep[0] * i,
+                color2[1] - colorStep[1] * i,
+                color2[2] - colorStep[2] * i,
+                color2[3] - colorStep[3] * i
+            ])
     }
 }

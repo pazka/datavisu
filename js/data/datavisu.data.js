@@ -28,12 +28,20 @@ class DataManager{
     }
 
     //phase init at 0 for init purpose
-    phases = [
+    phases = [/*
         {
             totalTimeLength : 2 * 60 * 1000,
             action: ()=>{ 
-                Sirene.browse((bat) => {
+                Ril.browse((bat) => {
                     _dataMngr.addData(bat);
+                })
+            }
+        },*/
+        {
+            totalTimeLength : 2 * 60 * 1000,
+            action: ()=>{ 
+                Sirene.browse((comm) => {
+                    _dataMngr.addData(comm);
                 })
             }
         },/*{
@@ -178,6 +186,9 @@ class Data{
         y : 0
     }
     noise = 1 + rdm()*50
+    get varNoise () {
+        return 
+    } 
 
     constructor(rawData,_date,_life = 10,_x,_y){
         this.rawData = rawData
@@ -201,14 +212,14 @@ class Data{
     draw(p){       
         
         let x = (this.age/this.life);
-        //stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])
+        stupidCircle(p,this.pos.x,this.pos.y,20,[155,155,155])
         
-        drawStar(p,this.pos.x, this.pos.y, this.noise/2,200*x,this.noise, [
+        /*drawStar(p,this.pos.x, this.pos.y, this.noise/2,200*x,this.noise, [
             0,
             0, 
             110 + 40*x,
             255*easeInOut(x)]);
-            
+            */
 
         // drawStar(p,this.pos.x, this.pos.y, 1,vs(this.noise*100)*100*easeInOut(x),this.noise, [
         //     vs(100)*127+vc(100)*127,

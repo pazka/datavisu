@@ -31,7 +31,7 @@ _p = new p5((p) => {
         _map.setup()
         _map.prepareMask(_p)
         //New type to register here
-        _dataMngr = new DataManager([Air,Sirene])
+        _dataMngr = new DataManager([Air,Sirene,Ril])
         _dataMngr.updateDateBounds()
         _map.setupGrid();
         _dataMngr.newPhase()
