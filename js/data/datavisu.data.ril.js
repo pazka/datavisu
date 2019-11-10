@@ -19,7 +19,7 @@ class DataRil extends Data {
 
     draw(p) {
         let x = (this.age / this.life);
-/*
+
         drawStarGradient(p, this.pos.x, this.pos.y,
             3, 
             this.noise *10* easeInOut(x), 
@@ -27,15 +27,16 @@ class DataRil extends Data {
             [255,255,255, 255 * easeInOut(x)],
             [25,25,255, 255 * easeInOut(x)],
             3
-        )*/
-
-        super.draw(p);
+        )
+    
+        
+        // super.draw(p);
     }
 }
 
 class Ril extends DataType {
     type = "Ril";
-    static get avgLife() { return _dataMngr.datesBounds.totalTimeLength / 100 };
+    static get avgLife() { return _dataMngr.datesBounds.totalTimeLength / 40 };
     static get json() { return import_ril_json }
     __dateBounds = null
     static get dateBounds() { return this.__dateBounds }
@@ -54,7 +55,6 @@ class Ril extends DataType {
         Ril.json.forEach(data => {
 
             let tmp_d = new Date(data.properties.ANNEE_CONS, 0,0).getTime();
-
 
             if (tmp_d < dateBounds.minDate) {
                 dateBounds.minDate = tmp_d;
