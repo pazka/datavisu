@@ -1,5 +1,16 @@
 let maxFpa = 0;
 let frame = 0;
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
 function getFrame(framePerAction, fn) {
     if (frameCount % framePerAction == 0)
         fn();
@@ -10,11 +21,11 @@ function rdm() {
 }
 
 //noise function
-let noiseScale = [1,1]
-function ns1(x){
+let noiseScale = [1, 1]
+function ns1(x) {
     return _p.noise(noiseScale[0]) * x
 }
-function ns2(x,y){
+function ns2(x, y) {
     return [_p.noise(noiseScale[0]) * x, _p.noise(noiseScale[1]) * y]
 }
 
@@ -150,22 +161,22 @@ function drawStar(p, x, y, radius1, radius2, npoints, color) {
 }
 
 function drawStarGradient(p, x, y, radius1, radius2, npoints, color1, color2, pass) {
-    if(!pass){
+    if (!pass) {
         pass = 5
     }
 
     pass = pass - 1
 
     let colorStep = [
-        (color2[0] - color1[0])/pass,
-        (color2[1] - color1[1])/pass,
-        (color2[2] - color1[2])/pass,
-        (color2[3] - color1[3])/pass
+        (color2[0] - color1[0]) / pass,
+        (color2[1] - color1[1]) / pass,
+        (color2[2] - color1[2]) / pass,
+        (color2[3] - color1[3]) / pass
     ]
     let radiusStep = (radius2 - radius1) / pass
 
     for (let i = 0; i <= pass; i++) {
-        drawStar(p,x,y,
+        drawStar(p, x, y,
             radius1,
             radius2 - radiusStep * i,
             npoints,
