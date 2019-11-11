@@ -34,14 +34,14 @@ class DataManager {
 
     //phase init at 0 for init purpose
     phases = [
-        /*{
+        {
             totalTimeLength: 2 * 60 * 1000,
             action: () => {
                 Ril.browse((bat) => {
                     _dataMngr.addData(bat);
                 })
             }
-        },*/
+        }/*,
         {
             totalTimeLength : 2 * 60 * 1000,
             action: ()=>{ 
@@ -187,9 +187,9 @@ class DataManager {
         this.allDataToDisplay2 = [];
 
         //TODO faire ça propre
-        this.phase++;
         this.datesBounds.totalTimeLength = this.phases[this.phase] ? this.phases[this.phase].totalTimeLength : 0;
         this.phase_time_elapsed += this.phases[this.phase] ? this.phases[this.phase].totalTimeLength : 0;
+        this.phase++;
 
         if (this.isEnded) {
             this.phase = 0;
